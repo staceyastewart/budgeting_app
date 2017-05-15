@@ -1,0 +1,43 @@
+INCOME
+View and edit income by Month:
+
+<a href="/income/January">January</a>
+<a href="/income/February">February</a>
+<a href="/income/March">March</a>
+<a href="/income/April">April</a>
+<a href="/income/May">May</a>
+<a href="/income/June">June</a>
+<a href="/income/July">July</a>
+<a href="/income/August">August</a>
+<a href="/income/September">September</a>
+<a href="/income/October">October</a>
+<a href="/income/November">November</a>
+<a href="/income/December">December</a>
+
+<br><br>
+Add an income to every month below. If you would like to add an income to one month, please visit that month's page
+<br><br>
+
+<%= form_for :income, url: "/income" do |f| %>
+  <%= label_tag(:description, "Description") %>
+  <%= text_field_tag :description %> <br>
+  <%= label_tag(:amount, "Amount") %>
+  <%= text_field_tag :amount %> <br>
+  <%= label_tag(:day, "Day") %>
+  <%= text_field_tag :day %> <br>
+  <%= label_tag(:month, "Month") %>
+  <%= text_field_tag :month, "ALL", :readonly => true %> <br>
+  <%= label_tag(:year, "Year") %>
+  <%= text_field_tag :year, "2017" %> <br>
+  <%= hidden_field_tag :user_id, @user_id %>
+  <%= f.submit "Add an Income" %>
+<% end %>
+
+
+<br><br>
+
+<% @recurring.each do |income| %>
+  <%= income.description %>
+  <%= income.amount %><br>
+
+<% end %>

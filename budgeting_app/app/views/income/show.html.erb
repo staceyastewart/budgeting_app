@@ -1,0 +1,44 @@
+
+<%= form_for :income, url: "/income" do |f| %>
+  <%= label_tag(:description, "Description") %>
+  <%= text_field_tag :description %> <br>
+  <%= label_tag(:amount, "Amount") %>
+  <%= text_field_tag :amount %> <br>
+  <%= label_tag(:day, "Day") %>
+  <%= text_field_tag :day %> <br>
+  <%= label_tag(:month, "Month") %>
+  <%= text_field_tag :month, params["id"] %> <br>
+  <%= label_tag(:year, "Year") %>
+  <%= text_field_tag :year, "2017" %> <br>
+  <%= hidden_field_tag :user_id, @user_id %>
+  <%= f.submit "Add an Income" %>
+<% end %>
+
+
+
+<table border="1">
+  <tr>
+    <th>Description</th>
+    <th>Amount</th>
+    <th>Month</th>
+    <th>Day</th>
+    <th>Year</th>
+    <th>Update?</th>
+  </tr>
+
+<% @monthIncome.each do |income| %>
+  <tr>
+    <%= form_for :income, url: "/income/#{income.id}", :method => :put do |f| %>
+      <td><%= text_field_tag :description, income.description %></td>
+      <td><%= text_field_tag :amount, income.amount %></td>
+      <td><%= text_field_tag :month, income.month %></td>
+      <td><%= text_field_tag :day, income.day %></td>
+      <td><%= text_field_tag :year, income.year %></td>
+      <td><%= f.submit "Update!" %></td>
+      <td></td>
+    <% end %>
+  </tr>
+
+<% end %>
+
+</table>

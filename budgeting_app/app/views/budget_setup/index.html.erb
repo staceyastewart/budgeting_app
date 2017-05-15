@@ -33,26 +33,39 @@ BUDGET SETUP
     <th><a href="/budget_setup/November">November</th>
     <th><a href="/budget_setup/December">December</th>
   </tr>
-  <% @subcat.each do |sub| %>
-    <tr>
-      <th><%= sub.category %></th>
-      <th><%= sub.name %></th>
-      <% @monthAmounts.each do |amt| %>
 
-        <% if amt.name == sub.name %>
-          <th><%= amt.amount %>  </th>
+  <% @cat.each do |cat| %>
 
+    <% @group.each do |sub| %>
+      <% if cat.category == sub.category %>
+      <tr>
+        <td><%= cat.category %></td>
+        <td><%= sub.name %><br></td>
+        <% @monthAmounts.each do |month| %>
+
+          <% if month.name == sub.name %>
+
+            <td><%= month.amount %>  </td>
+
+          <% end %>
         <% end %>
+        </tr>
       <% end %>
-
+    <% end %>
+    <tr>
+      <td>total</td>
     </tr>
   <% end %>
+
 </table>
 
 
-  <% @group.each do |amt| %>
 
-    <%= amt.category %><br>
 
-  <% end %>
+
+
+
+
+
+
 

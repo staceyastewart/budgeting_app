@@ -7,11 +7,12 @@ class BudgetSetupController < ApplicationController
     # @subcat = Subcategory.all.map(&:name).uniq
     # @subcat = Subcategory.where(:user_id => current_user.id).select("DISTINCT ON (name)").group(:name)
     @subcat = Subcategory.where(:user_id => current_user.id).select("DISTINCT ON (name) *")
-    @group = Subcategory.select(:category).group(:category)
-    puts @group
+    @cat = Subcategory.select(:category).group(:category)
+    @group = Subcategory.select(:category, :name).group(:category, :name).order(:category)
     @monthAmounts = Subcategory.where(:user_id => current_user.id).order(:month_num)
 
-    # puts @subcat
+    # create instance variables for the total rows and pass them in
+
 
   end
 
@@ -28,6 +29,8 @@ class BudgetSetupController < ApplicationController
 
   def create
     puts params[:budget][:month]
+
+
     if (params["budget"]["month"] == "ALL")
       Subcategory.create(
         [
