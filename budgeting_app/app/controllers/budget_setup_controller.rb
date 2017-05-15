@@ -1,4 +1,5 @@
 class BudgetSetupController < ApplicationController
+  before_filter :authenticate_user!
 
   def index
     @user_id = current_user.id
@@ -6,8 +7,11 @@ class BudgetSetupController < ApplicationController
     # @subcat = Subcategory.all.map(&:name).uniq
     # @subcat = Subcategory.where(:user_id => current_user.id).select("DISTINCT ON (name)").group(:name)
     @subcat = Subcategory.where(:user_id => current_user.id).select("DISTINCT ON (name) *")
-    @monthlyAmounts = Subcategory.where(:user_id => current_user.id)
-    puts @subcat
+    @group = Subcategory.select(:category).group(:category)
+    puts @group
+    @monthAmounts = Subcategory.where(:user_id => current_user.id).order(:month_num)
+
+    # puts @subcat
 
   end
 
@@ -24,35 +28,6 @@ class BudgetSetupController < ApplicationController
 
   def create
     puts params[:budget][:month]
-    case params[:budget][:month]
-    when "January"
-      @month_id = 1
-    when "February"
-      @month_id = 2
-    when "March"
-      @month_id = 3
-    when "April"
-      @month_id = 4
-    when "May"
-      @month_id = 5
-    when "June"
-      @month_id = 6
-    when "July"
-      @month_id = 7
-    when "August"
-      @month_id = 8
-    when "September"
-      @month_id = 9
-    when "October"
-      @month_id = 10
-    when "November"
-      @month_id = 11
-    when "December"
-      @month_id = 12
-    when "ALL"
-
-    end
-
     if (params["budget"]["month"] == "ALL")
       Subcategory.create(
         [
@@ -69,16 +44,6 @@ class BudgetSetupController < ApplicationController
           { name: params[:name], amount: params[:amount], category: params[:category], month: "November", month_num: 11, year: params[:year], user_id: params[:user_id] },
           { name: params[:name], amount: params[:amount], category: params[:category], month: "December", month_num: 12, year: params[:year], user_id: params[:user_id] }
         ])
-      redirect_to :back
-    else
-      Subcategory.create(
-        name: params[:name],
-        amount: params[:amount],
-        category: params[:category],
-        month: params[:budget][:month],
-        month_num: @month_id,
-        year: params[:year],
-        user_id: params[:user_id])
       redirect_to :back
     end
   end

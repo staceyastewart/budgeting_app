@@ -7,60 +7,52 @@ BUDGET SETUP
   <%= text_field_tag :amount %> <br>
   <%= label_tag(:cateogry, "Category") %>
   <%= text_field_tag :category %> <br>
-  <%= label_tag(:month, "Month") %>
-  <%= f.select :month, ["ALL", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]%> <br>
+  <%= hidden_field_tag :month, "ALL" %>
   <%= label_tag(:year, "Year") %>
   <%= text_field_tag :year, "2017" %> <br>
   <%= hidden_field_tag :user_id, @user_id %>
   <%= f.submit "Add a new Subcategory!" %>
 <% end %>
 
+<br><br>
+
 <table border="1">
   <tr>
     <th>CATEGORY</th>
     <th>Subcategory</th>
-    <th><a href="budget_setup/January">January</a></th>
-    <th><a href="budget_setup/February">February</th>
-    <th><a href="budget_setup/March">March</th>
-    <th><a href="budget_setup/April">April</th>
-    <th><a href="budget_setup/May">May</th>
-    <th><a href="budget_setup/June">June</th>
-    <th><a href="budget_setup/July">July</th>
-    <th><a href="budget_setup/August">August</th>
-    <th><a href="budget_setup/September">September</th>
-    <th><a href="budget_setup/October">October</th>
-    <th><a href="budget_setup/November">November</th>
-    <th><a href="budget_setup/December">December</th>
+    <th><a href="/budget_setup/January">January</a></th>
+    <th><a href="/budget_setup/February">February</th>
+    <th><a href="/budget_setup/March">March</th>
+    <th><a href="/budget_setup/April">April</th>
+    <th><a href="/budget_setup/May">May</th>
+    <th><a href="/budget_setup/June">June</th>
+    <th><a href="/budget_setup/July">July</th>
+    <th><a href="/budget_setup/August">August</th>
+    <th><a href="/budget_setup/September">September</th>
+    <th><a href="/budget_setup/October">October</th>
+    <th><a href="/budget_setup/November">November</th>
+    <th><a href="/budget_setup/December">December</th>
   </tr>
   <% @subcat.each do |sub| %>
     <tr>
       <th><%= sub.category %></th>
       <th><%= sub.name %></th>
-        <% counter = 0 %>
-      <% @monthlyAmounts.each do |amt| %>
-
+      <% @monthAmounts.each do |amt| %>
 
         <% if amt.name == sub.name %>
           <th><%= amt.amount %>  </th>
+
         <% end %>
       <% end %>
 
     </tr>
   <% end %>
-
-
 </table>
 
 
-<br><br>
+  <% @group.each do |amt| %>
 
-<% @monthlyAmounts.each do |amt| %>
-  <%= amt.name %>
-  <%= amt.month %>
-  <%= amt.amount %>
-  <%= amt.category %>
-  <br>
+    <%= amt.category %><br>
 
-
-<% end %>
+  <% end %>
 

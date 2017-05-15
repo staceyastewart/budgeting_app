@@ -15,6 +15,47 @@ ActiveRecord::Schema.define(version: 20170515183236) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "expenses", force: :cascade do |t|
+    t.string   "month"
+    t.string   "day"
+    t.string   "year"
+    t.float    "amount"
+    t.string   "description"
+    t.boolean  "isrecurring"
+    t.integer  "subcategory_id", null: false
+    t.integer  "user_id",        null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["subcategory_id"], name: "index_expenses_on_subcategory_id", using: :btree
+    t.index ["user_id"], name: "index_expenses_on_user_id", using: :btree
+  end
+
+  create_table "incomes", force: :cascade do |t|
+    t.string   "month"
+    t.string   "day"
+    t.string   "year"
+    t.float    "amount"
+    t.string   "description"
+    t.boolean  "isrecurring"
+    t.integer  "user_id",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["user_id"], name: "index_incomes_on_user_id", using: :btree
+  end
+
+  create_table "subcategories", force: :cascade do |t|
+    t.string   "name"
+    t.float    "amount"
+    t.string   "category"
+    t.string   "month"
+    t.string   "year"
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "month_num"
+    t.index ["user_id"], name: "index_subcategories_on_user_id", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -34,4 +75,8 @@ ActiveRecord::Schema.define(version: 20170515183236) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "expenses", "subcategories"
+  add_foreign_key "expenses", "users"
+  add_foreign_key "incomes", "users"
+  add_foreign_key "subcategories", "users"
 end
