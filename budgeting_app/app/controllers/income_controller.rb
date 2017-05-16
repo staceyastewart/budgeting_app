@@ -1,8 +1,10 @@
 class IncomeController < ApplicationController
+  # before_filter :authenticate_user!
+
   def index
     @user_id = current_user.id
     # @recurring = Income.where(:isrecurring => true)
-    @recurring = Income.where(:isrecurring => true)
+    @recurring = Income.where(:isrecurring => true).where(:month => "ALL")
   end
 
   def show
@@ -13,9 +15,6 @@ class IncomeController < ApplicationController
   end
 
   def create
-    puts params
-    puts params["id"]
-
     case params[:month]
     when "January"
       @month_id = 1
@@ -43,7 +42,6 @@ class IncomeController < ApplicationController
       @month_id = 12
     when "ALL"
     end
-
     if (params["month"] == "ALL")
       Income.create(
         [
@@ -58,7 +56,8 @@ class IncomeController < ApplicationController
           { description: params[:description], amount: params[:amount], day: params[:day], month: "September", month_num: 9, year: params[:year], user_id: params[:user_id], isrecurring: true },
           { description: params[:description], amount: params[:amount], day: params[:day], month: "October", month_num: 10, year: params[:year], user_id: params[:user_id], isrecurring: true },
           { description: params[:description], amount: params[:amount], day: params[:day], month: "November", month_num: 11, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "December", month_num: 12, year: params[:year], user_id: params[:user_id], isrecurring: true }
+          { description: params[:description], amount: params[:amount], day: params[:day], month: "December", month_num: 12, year: params[:year], user_id: params[:user_id], isrecurring: true },
+          { description: params[:description], amount: params[:amount], day: params[:day], month: "ALL", month_num: 0, year: params[:year], user_id: params[:user_id], isrecurring: true },
         ])
       redirect_to :back
     else
@@ -86,6 +85,18 @@ class IncomeController < ApplicationController
         year: params[:year] )
       redirect_to :back
 
+  end
+
+
+  def destroy
+    puts "WHAT"
+    # incomeToDelete = Income.where(:description => params[:description])
+    incomeToDelete = Income.where(description: params[:description])
+    puts incomeToDelete
+    # return unless incomeToDelete.user_id === current_user.id
+
+    incomeToDelete.destroy_all
+    redirect_to :back
   end
 
 

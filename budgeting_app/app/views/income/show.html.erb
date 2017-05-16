@@ -24,6 +24,7 @@
     <th>Day</th>
     <th>Year</th>
     <th>Update?</th>
+    <th>Delete?</th>
   </tr>
 
 <% @monthIncome.each do |income| %>
@@ -35,8 +36,13 @@
       <td><%= text_field_tag :day, income.day %></td>
       <td><%= text_field_tag :year, income.year %></td>
       <td><%= f.submit "Update!" %></td>
-      <td></td>
     <% end %>
+      <%= form_for(income, :html => {:method => 'delete'}) do |e| %>
+          <%= hidden_field_tag :delete_id, income.id %>
+          <%= hidden_field_tag :description, income.description %>
+        <td><%= e.submit "Delete" %></td>
+      <% end %>
+
   </tr>
 
 <% end %>

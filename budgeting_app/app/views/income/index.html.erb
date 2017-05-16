@@ -36,8 +36,25 @@ Add an income to every month below. If you would like to add an income to one mo
 
 <br><br>
 
-<% @recurring.each do |income| %>
-  <%= income.description %>
-  <%= income.amount %><br>
 
+
+<table border="1">
+  <tr>
+    <th>Description</th>
+    <th>Amount</th>
+    <th>Delete?</th>
+  </tr>
+  <tr>
+<% @recurring.each do |income| %>
+  <tr>
+    <td><%= income.description %></td>
+    <td><%= income.amount %></td><br>
+      <%= form_for(income, :html => {:method => 'delete'}) do |f| %>
+          <%= hidden_field_tag :delete_id, income.id %>
+          <%= hidden_field_tag :description, income.description %>
+        <td><%= f.submit "Delete" %></td>
+      <% end %>
+  </tr>
 <% end %>
+</tr>
+</table>
