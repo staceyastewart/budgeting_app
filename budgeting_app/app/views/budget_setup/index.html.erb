@@ -35,29 +35,43 @@ BUDGET SETUP
   </tr>
 
   <% @cat.each do |cat| %>
+    <tr>
+
+
+      <% @countOfSubcats.each do |x| %>
+        <% if x[0] == cat.category %>
+          <% @rowz = x[1] + 1 %>
+          <%= @rowz %>
+
+        <% end %>
+      <% end %>
+
+      <%= @rowz %>
+      <td rowspan='#{@rowz}'> <%= cat.category %> </td>
 
     <% @group.each do |sub| %>
       <% if cat.category == sub.category %>
+
       <tr>
-        <td><%= cat.category %></td>
+        <!-- <td> </td> -->
         <td><%= sub.name %><br></td>
         <% @monthAmounts.each do |month| %>
-
           <% if month.name == sub.name %>
-
             <td><%= month.amount %>  </td>
-
           <% end %>
         <% end %>
-        </tr>
       <% end %>
-    <% end %>
-    <tr>
-      <td>total</td>
+        </tr>
+
+  <% end %>
+  <tr>
+      <td ><%= cat.category %>  </td>
     </tr>
   <% end %>
 
 </table>
+
+
 
 
 

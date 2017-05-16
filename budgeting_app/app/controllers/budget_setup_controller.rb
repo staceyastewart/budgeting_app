@@ -10,6 +10,10 @@ class BudgetSetupController < ApplicationController
     @cat = Subcategory.select(:category).group(:category)
     @group = Subcategory.select(:category, :name).group(:category, :name).order(:category)
     @monthAmounts = Subcategory.where(:user_id => current_user.id).order(:month_num)
+    # @countOfSubcats = Subcategory.select("category, COUNT(DISTINCT name)").group(:category)
+
+    @countOfSubcats = Subcategory.select(:category).group(:category).distinct.count(:name)
+    puts @countOfSubcats
 
     # create instance variables for the total rows and pass them in
 
