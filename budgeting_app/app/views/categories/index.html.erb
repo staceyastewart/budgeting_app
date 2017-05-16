@@ -1,0 +1,18 @@
+*Start here!* <br>
+
+First, please create categories below. Please add around 10 categories. When you feel comfortable with your categories, you can move on to subcategories. Don't worry - you can always come back to add or edit your categories. <br><br>
+
+<a href="/subcategories">Make subcategories</a>
+
+<%= form_for :categories, url: "/categories" do |f| %>
+  <%= label_tag(:title, "Title") %>
+  <%= text_field_tag :title %> <br>
+
+  <%= hidden_field_tag :user_id, @user %>
+  <%= f.submit "Add a new Category!" %>
+<% end %>
+
+
+<% @categories.each do |category| %>
+  <%= category.title %><br>
+<% end %>

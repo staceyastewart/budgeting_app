@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   resources :income
   resources :expsenses
   resources :budget_setup
+  resources :categories
+  resources :subcategories
 end

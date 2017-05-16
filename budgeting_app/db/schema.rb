@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170515214037) do
+ActiveRecord::Schema.define(version: 20170516202330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "categories"
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_categories_on_user_id", using: :btree
+  end
 
   create_table "expenses", force: :cascade do |t|
     t.string   "month"
@@ -45,16 +54,25 @@ ActiveRecord::Schema.define(version: 20170515214037) do
     t.index ["user_id"], name: "index_incomes_on_user_id", using: :btree
   end
 
+  create_table "monthlyBudgets", force: :cascade do |t|
+    t.string   "month"
+    t.integer  "year"
+    t.integer  "amount"
+    t.integer  "user_id"
+    t.integer  "subcategory_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["subcategory_id"], name: "index_monthlyBudgets_on_subcategory_id", using: :btree
+    t.index ["user_id"], name: "index_monthlyBudgets_on_user_id", using: :btree
+  end
+
   create_table "subcategories", force: :cascade do |t|
     t.string   "name"
-    t.float    "amount"
-    t.string   "category"
-    t.string   "month"
-    t.string   "year"
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "month_num"
+    t.integer  "user_id",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "category_id"
+    t.index ["category_id"], name: "index_subcategories_on_category_id", using: :btree
     t.index ["user_id"], name: "index_subcategories_on_user_id", using: :btree
   end
 
@@ -77,8 +95,12 @@ ActiveRecord::Schema.define(version: 20170515214037) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "categories", "users"
   add_foreign_key "expenses", "subcategories"
   add_foreign_key "expenses", "users"
   add_foreign_key "incomes", "users"
+  add_foreign_key "monthlyBudgets", "subcategories"
+  add_foreign_key "monthlyBudgets", "users"
+  add_foreign_key "subcategories", "categories"
   add_foreign_key "subcategories", "users"
 end
