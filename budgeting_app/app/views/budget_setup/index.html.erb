@@ -20,6 +20,7 @@ BUDGET SETUP
   <tr>
     <th>CATEGORY</th>
     <th>Subcategory</th>
+    <th>Delete?</th>
     <th><a href="/budget_setup/January">January</a></th>
     <th><a href="/budget_setup/February">February</th>
     <th><a href="/budget_setup/March">March</th>
@@ -36,27 +37,25 @@ BUDGET SETUP
 
   <% @cat.each do |cat| %>
     <tr>
-
-
       <% @countOfSubcats.each do |x| %>
         <% if x[0] == cat.category %>
           <% @rowz = x[1] + 1 %>
-          <%= @rowz %>
-
         <% end %>
       <% end %>
+      <td rowspan=<%= @rowz %>><strong> <%= cat.category %></strong> </td>
+    <% @group.each do |subcategory| %>
+      <% if cat.category == subcategory.category %>
+        <td><%= subcategory.name %><br></td>
+        <!-- <td> test </td> -->
 
-      <%= @rowz %>
-      <td rowspan='#{@rowz}'> <%= cat.category %> </td>
+        <%= form_for(:subcategory, {:id => 1, :method => :delete}) do |e| %>
+            <%= text_field_tag :delete_id, (Subcategory.where(:name => subcategory.name).where(:user_id => current_user.id).first).id %>
+            <%= hidden_field_tag :name, subcategory.name %>
+          <td><%= e.submit "Delete" %></td>
+        <% end %>
 
-    <% @group.each do |sub| %>
-      <% if cat.category == sub.category %>
-
-      <tr>
-        <!-- <td> </td> -->
-        <td><%= sub.name %><br></td>
         <% @monthAmounts.each do |month| %>
-          <% if month.name == sub.name %>
+          <% if month.name == subcategory.name %>
             <td><%= month.amount %>  </td>
           <% end %>
         <% end %>
@@ -65,16 +64,11 @@ BUDGET SETUP
 
   <% end %>
   <tr>
-      <td ><%= cat.category %>  </td>
+      <td><%= cat.category %> total </td>
     </tr>
   <% end %>
 
 </table>
-
-
-
-
-
 
 
 

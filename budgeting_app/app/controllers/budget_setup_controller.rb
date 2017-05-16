@@ -32,10 +32,7 @@ class BudgetSetupController < ApplicationController
 
 
   def create
-    puts params[:budget][:month]
-
-
-    if (params["budget"]["month"] == "ALL")
+    if (params["month"] == "ALL")
       Subcategory.create(
         [
           { name: params[:name], amount: params[:amount], category: params[:category], month: "January", month_num: 1, year: params[:year], user_id: params[:user_id] },
@@ -75,6 +72,18 @@ class BudgetSetupController < ApplicationController
       user_id: params[:user_id]
       )
     redirect_to :back
+  end
+
+
+  def destroy
+    # puts "WHAT"
+    # # incomeToDelete = Income.where(:description => params[:description])
+    # subcatToDelete = Subcategory.where(name: params[:name])
+    # puts subcatToDelete
+    # # return unless incomeToDelete.user_id === current_user.id
+
+    # subcatToDelete.destroy_all
+    # redirect_to :back
   end
 
 end
