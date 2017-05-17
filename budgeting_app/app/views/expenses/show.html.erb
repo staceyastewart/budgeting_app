@@ -1,0 +1,54 @@
+
+
+<%= form_for :expense, url: "/expenses" do |f| %>
+  <%= label_tag(:description, "Description") %>
+  <%= text_field_tag :description %> <br>
+  <%= label_tag(:amount, "Amount") %>
+  <%= text_field_tag :amount %> <br>
+  <%= label_tag(:subcategory, "Subcategory") %>
+  <%= f.collection_select :subcategory,  Subcategory.where(:user_id => current_user.id), :id, :name %><br>
+  <%= label_tag(:day, "Day") %>
+  <%= f.select :day, (1..31) %><br>
+
+  <%= label_tag(:month, "Month") %>
+  <%= text_field_tag :month, params[:id], :readonly => true %> <br>
+  <%= label_tag(:year, "Year") %>
+  <%= text_field_tag :year, params[:year], :readonly => true %> <br>
+  <%= hidden_field_tag :user_id, @user %>
+  <%= f.submit "Add an Expense" %>
+<% end %>
+
+<br><br>
+
+
+
+<table border="1">
+  <tr>
+    <th>Description</th>
+    <th>Amount</th>
+    <th>Month</th>
+    <th>Day</th>
+    <th>Year</th>
+    <th>Update?</th>
+    <th>Delete?</th>
+  </tr>
+<% @monthExpense.each do |expense| %>
+
+
+
+  <tr>
+    <%= form_for :expense, url: "/expenses/#{expense.id}", :method => :put do |f| %>
+      <td><%= text_field_tag :description, expense.description %></td>
+      <td><%= text_field_tag :amount, expense.amount %></td>
+      <td><%= text_field_tag :month, expense.month %></td>
+      <td><%= text_field_tag :day, expense.day %></td>
+      <td><%= text_field_tag :year, expense.year %></td>
+      <td><%= f.submit "Update!" %></td>
+    <% end %>
+      <td><%= link_to 'Destroy', expense, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+  </tr>
+
+
+<% end %>
+
+</table>

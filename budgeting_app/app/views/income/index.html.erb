@@ -1,18 +1,18 @@
 INCOME
 View and edit income by Month:
 
-<a href="/income/January">January</a>
-<a href="/income/February">February</a>
-<a href="/income/March">March</a>
-<a href="/income/April">April</a>
-<a href="/income/May">May</a>
-<a href="/income/June">June</a>
-<a href="/income/July">July</a>
-<a href="/income/August">August</a>
-<a href="/income/September">September</a>
-<a href="/income/October">October</a>
-<a href="/income/November">November</a>
-<a href="/income/December">December</a>
+<a href="/income/January?year=2017">January</a>
+<a href="/income/February?year=2017">February</a>
+<a href="/income/March?year=2017">March</a>
+<a href="/income/April?year=2017">April</a>
+<a href="/income/May?year=2017">May</a>
+<a href="/income/June?year=2017">June</a>
+<a href="/income/July?year=2017">July</a>
+<a href="/income/August?year=2017">August</a>
+<a href="/income/September?year=2017">September</a>
+<a href="/income/October?year=2017">October</a>
+<a href="/income/November?year=2017">November</a>
+<a href="/income/December?year=2017">December</a>
 
 <br><br>
 Add an income to every month below. If you would like to add an income to one month, please visit that month's page
@@ -28,7 +28,7 @@ Add an income to every month below. If you would like to add an income to one mo
   <%= label_tag(:month, "Month") %>
   <%= text_field_tag :month, "ALL", :readonly => true %> <br>
   <%= label_tag(:year, "Year") %>
-  <%= text_field_tag :year, "2017" %> <br>
+  <%= text_field_tag :year, params[:year] %> <br>
   <%= hidden_field_tag :user_id, @user_id %>
   <%= f.submit "Add an Income" %>
 <% end %>

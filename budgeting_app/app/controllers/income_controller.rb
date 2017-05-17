@@ -4,13 +4,13 @@ class IncomeController < ApplicationController
   def index
     @user_id = current_user.id
     # @recurring = Income.where(:isrecurring => true)
-    @recurring = Income.where(:isrecurring => true).where(:month => "ALL")
+    @recurring = Income.where(:isrecurring => true).where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
   end
 
   def show
     @user_id = current_user.id
     month =  params[:id]
-    @monthIncome = Income.where(:month => month)
+    @monthIncome = Income.where(:month => month).where(:year => params[:year]).where(:user_id => current_user.id)
     puts @monthIncome
   end
 
@@ -84,14 +84,13 @@ class IncomeController < ApplicationController
         month_num: @month_id,
         year: params[:year] )
       redirect_to :back
-
   end
 
 
   def destroy
     puts "WHAT"
     # incomeToDelete = Income.where(:description => params[:description])
-    incomeToDelete = Income.where(description: params[:description])
+    incomeToDelete = Income.where(description: params[:description]).where(user_id: current_user.id)
     puts incomeToDelete
     # return unless incomeToDelete.user_id === current_user.id
 

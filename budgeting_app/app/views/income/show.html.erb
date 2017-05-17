@@ -9,7 +9,7 @@
   <%= label_tag(:month, "Month") %>
   <%= text_field_tag :month, params["id"] %> <br>
   <%= label_tag(:year, "Year") %>
-  <%= text_field_tag :year, "2017" %> <br>
+  <%= text_field_tag :year, params[:year] %> <br>
   <%= hidden_field_tag :user_id, @user_id %>
   <%= f.submit "Add an Income" %>
 <% end %>

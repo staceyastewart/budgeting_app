@@ -1,1 +1,40 @@
-Expense
+Expenses
+
+View and edit expenses by Month:
+
+<a href="/expenses/January?year=2017">January</a>
+<a href="/expenses/February?year=2017">February</a>
+<a href="/expenses/March?year=2017">March</a>
+<a href="/expenses/April?year=2017">April</a>
+<a href="/expenses/May?year=2017">May</a>
+<a href="/expenses/June?year=2017">June</a>
+<a href="/expenses/July?year=2017">July</a>
+<a href="/expenses/August?year=2017">August</a>
+<a href="/expenses/September?year=2017">September</a>
+<a href="/expenses/October?year=2017">October</a>
+<a href="/expenses/November?year=2017">November</a>
+<a href="/expenses/December?year=2017">December</a>
+
+<br><br>
+Add a recurring expense to every month below. If you would like to add an expense to one month, please visit that month's page
+<br><br>
+
+<%= form_for :expenses, url: "/expenses" do |f| %>
+  <%= label_tag(:description, "Description") %>
+  <%= text_field_tag :description %> <br>
+  <%= label_tag(:amount, "Amount") %>
+  <%= text_field_tag :amount %> <br>
+  <%= label_tag(:subcategory, "Subcategory") %>
+  <%= f.collection_select :subcategory,  Subcategory.where(:user_id => current_user.id), :id, :name %><br>
+  <%= label_tag(:day, "Day") %>
+  <%= f.select :day, (1..31) %><br>
+  <%= label_tag(:month, "Month") %>
+  <%= text_field_tag :month, "ALL", :readonly => true %> <br>
+  <%= label_tag(:year, "Year") %>
+  <%= text_field_tag :year, params[:year] %> <br>
+  <%= hidden_field_tag :user_id, @user %>
+  <%= f.submit "Add an Expense" %>
+<% end %>
+
+
+
