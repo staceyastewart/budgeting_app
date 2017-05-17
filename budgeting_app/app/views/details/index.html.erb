@@ -32,6 +32,12 @@
 
         <%= budget_display(subcategories) %>
       </tr>
+
     <% end %>
+    <tr>
+        <td><%= category.title %></td>
+        <td> MONTH TOTAL</td>
+        <%= total_display(category) %>
+      </tr>
   <% end %>
 </table>
