@@ -1,0 +1,38 @@
+
+<a href="/details?year=2017?month=January">January</a>
+<a href="/details?year=2017?month=February">February</a>
+<a href="/details?year=2017?month=March">March</a>
+<a href="/details?year=2017?month=April">April</a>
+<a href="/details?year=2017?month=May">May</a>
+<a href="/details?year=2017?month=June">June</a>
+<a href="/details?year=2017?month=July">July</a>
+<a href="/details?year=2017?month=August">August</a>
+<a href="/details?year=2017?month=September">September</a>
+<a href="/details?year=2017?month=October">October</a>
+<a href="/details?year=2017?month=November">November</a>
+<a href="/details?year=2017?month=December">December</a>
+
+<br><br><br><br>
+
+
+<table border="1">
+  <tr>
+    <th>CATEGORY</th>
+    <th>SUBCATEGORY</th>
+    <th>Budget</th>
+    <th>Actual</th>
+    <th>Difference</th>
+
+  </tr>
+  <% @categories.each do |category| %>
+   <% category.subcategories.each do |subcat| %>
+      <tr>
+        <td><%= category.title %></td>
+        <td><%= subcat.name %></td>
+        <td><%= subcat.total_budget(@month, @year, current_user.id) %></td>
+        <td></td>
+        <td></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
