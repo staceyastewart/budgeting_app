@@ -14,29 +14,50 @@
 
 <br><br><br><br>
 
+<table border="1">
+  <tr>
+    <th>Spending</th>
+    <th>Total</th>
+  </tr>
+  <tr>
+    <td>Month Budget</td>
+    <td><%= @user.total_month_budget(@month, @year) %></td>
+  </tr>
+  <tr>
+    <td>Month Actual</td>
+    <td><%= @user.total_month_expense(@month, @year) %></td>
+  </tr>
+  <tr>
+    <td>Difference</td>
+    <%= difference(@user.total_month_budget(@month, @year), @user.total_month_expense(@month, @year)) %>
+  </tr>
+
+</table>
+
+
+
+<br><br><br><br>
+
 
 <table border="1">
   <tr>
-    <th>CATEGORY</th>
-    <th>SUBCATEGORY</th>
+    <th>Category</th>
+    <th>Subcategory</th>
     <th>Budget</th>
     <th>Actual</th>
     <th>Difference</th>
-
   </tr>
   <% @categories.each do |category| %>
    <% category.subcategories.each do |subcategories| %>
       <tr>
         <td><%= category.title %></td>
         <td><%= subcategories.name %></td>
-
         <%= budget_display(subcategories) %>
       </tr>
-
     <% end %>
     <tr>
-        <td><%= category.title %></td>
-        <td> MONTH TOTAL</td>
+        <td><strong><%= category.title %></strong></td>
+        <td><strong>Month Total</strong></td>
         <%= total_display(category) %>
       </tr>
   <% end %>
