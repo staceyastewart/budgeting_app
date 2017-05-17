@@ -37,4 +37,36 @@ Add a recurring expense to every month below. If you would like to add an expens
 <% end %>
 
 
+<br><br>
+Recurring monthly expenses:<br><br>
 
+<table border="1">
+  <tr>
+    <th>Description</th>
+    <th>Amount</th>
+    <th>Month</th>
+    <th>Day</th>
+    <th>Year</th>
+    <th>Update?</th>
+    <th>Delete?</th>
+  </tr>
+<% @expense.each do |expense| %>
+
+
+
+  <tr>
+    <%= form_for :expense, url: "/expenses/#{expense.id}", :method => :put do |f| %>
+      <td><%= text_field_tag :description, expense.description %></td>
+      <td><%= text_field_tag :amount, expense.amount %></td>
+      <td><%= text_field_tag :month, expense.month %></td>
+      <td><%= text_field_tag :day, expense.day %></td>
+      <td><%= text_field_tag :year, expense.year %></td>
+      <td><%= f.submit "Update!" %></td>
+    <% end %>
+      <td><%= link_to 'Destroy', expense, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+  </tr>
+
+
+<% end %>
+
+</table>

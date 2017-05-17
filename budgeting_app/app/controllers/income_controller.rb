@@ -76,26 +76,37 @@ class IncomeController < ApplicationController
   def update
     @incomeToEdit = Income.find_by_id(params[:id])
     return unless @incomeToEdit.user_id === current_user.id
-    @incomeToEdit.update(
+    if @incomeToEdit.month == "ALL"
+      allToEdit = Income.where(day: @incomeToEdit[:day]).where(description: @incomeToEdit[:description]).where(year: @incomeToEdit[:year]).where(:user_id => current_user.id)
+      allToEdit.update(
         description: params[:description],
         amount: params[:amount],
-        day: params[:day],
-        month: params[:month],
-        month_num: @month_id,
-        year: params[:year] )
+        day: params[:day])
       redirect_to :back
+    else
+      @incomeToEdit.update(
+        description: params[:description],
+        amount: params[:amount],
+        day: params[:day])
+      redirect_to :back
+    end
   end
 
 
   def destroy
     puts "WHAT"
     # incomeToDelete = Income.where(:description => params[:description])
-    incomeToDelete = Income.where(description: params[:description]).where(user_id: current_user.id)
-    puts incomeToDelete
-    # return unless incomeToDelete.user_id === current_user.id
-
-    incomeToDelete.destroy_all
-    redirect_to :back
+    incomeToDelete = Income.where(id: params[:id]).where(user_id: current_user.id)
+    p incomeToDelete.first
+    return unless incomeToDelete.first.user_id === current_user.id
+    if incomeToDelete.first.month == "ALL"
+      allToDelete = Income.where(day: incomeToDelete.first[:day]).where(description: incomeToDelete.first[:description]).where(year: incomeToDelete.first[:year]).where(:user_id => current_user.id)
+      allToDelete.destroy_all
+      redirect_to :back
+    else
+      incomeToDelete.destroy_all
+      redirect_to :back
+    end
   end
 
 

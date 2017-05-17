@@ -37,11 +37,7 @@
       <td><%= text_field_tag :year, income.year %></td>
       <td><%= f.submit "Update!" %></td>
     <% end %>
-      <%= form_for(income, :html => {:method => 'delete'}) do |e| %>
-          <%= hidden_field_tag :delete_id, income.id %>
-          <%= hidden_field_tag :description, income.description %>
-        <td><%= e.submit "Delete" %></td>
-      <% end %>
+      <td><%= link_to 'Destroy', income, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
   </tr>
 
 <% end %>
