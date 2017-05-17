@@ -1,0 +1,70 @@
+BUDGET SETUP<br><br>
+
+<%= form_for :monthly_budget, url: "/monthly_budget" do |f| %>
+  <%= label_tag(:amount, "Amount") %>
+  <%= text_field_tag :amount %> <br>
+  <%= label_tag(:subcategory, "Subcategory") %>
+  <%= f.collection_select :subcategory,  Subcategory.where(:user_id => current_user.id), :id, :name %> <br>
+  <%= hidden_field_tag :month, "ALL" %>
+  <%= hidden_field_tag :year, params[:year] %> <br>
+  <%= hidden_field_tag :user_id, @user %>
+  <%= f.submit "Add a new Budget!" %>
+<% end %>
+
+<br><br>
+
+<table border="1">
+  <tr>
+    <th>CATEGORY</th>
+    <th>Subcategory</th>
+    <!-- <th>Delete?</th> -->
+    <th><a href="/monthly_budget/January">January</a></th>
+    <th><a href="/monthly_budget/February">February</a></th>
+    <th><a href="/monthly_budget/March">March</a></th>
+    <th><a href="/monthly_budget/April">April</a></th>
+    <th><a href="/monthly_budget/May">May</a></th>
+    <th><a href="/monthly_budget/June">June</a></th>
+    <th><a href="/monthly_budget/July">July</a></th>
+    <th><a href="/monthly_budget/August">August</a></th>
+    <th><a href="/monthly_budget/September">September</a></th>
+    <th><a href="/monthly_budget/October">October</a></th>
+    <th><a href="/monthly_budget/November">November</a></th>
+    <th><a href="/monthly_budget/December">December</a></th>
+    <th>Delete</th>
+  </tr>
+
+  <% @cats.each do |cat| %>
+
+      <% @subcats.each do |subcategory| %>
+        <% if subcategory[1] == cat.id %>
+          <tr>
+            <td><%= cat. title %></td>
+            <td><%= subcategory[0] %></td>
+            <!-- <td> -->
+            <% @budgets.each do |budget| %>
+              <% if budget.subcategory_id == subcategory[2] %>
+                <td><%= budget.amount %></td>
+                <% if budget.month_num == 12 %>
+                  <td><%= link_to 'Destroy', budget, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+
+                <% end %>
+              <% end %>
+            <% end %>
+
+          </tr>
+        <% end %>
+      <% end %>
+
+  <% end %>
+
+
+
+</table>
+
+
+
+
+
+
+
+

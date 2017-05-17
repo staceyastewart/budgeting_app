@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170516202330) do
+ActiveRecord::Schema.define(version: 20170516220707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20170516202330) do
     t.index ["user_id"], name: "index_incomes_on_user_id", using: :btree
   end
 
-  create_table "monthlyBudgets", force: :cascade do |t|
+  create_table "monthly_budgets", force: :cascade do |t|
     t.string   "month"
     t.integer  "year"
     t.integer  "amount"
@@ -62,8 +62,9 @@ ActiveRecord::Schema.define(version: 20170516202330) do
     t.integer  "subcategory_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.index ["subcategory_id"], name: "index_monthlyBudgets_on_subcategory_id", using: :btree
-    t.index ["user_id"], name: "index_monthlyBudgets_on_user_id", using: :btree
+    t.integer  "month_num"
+    t.index ["subcategory_id"], name: "index_monthly_budgets_on_subcategory_id", using: :btree
+    t.index ["user_id"], name: "index_monthly_budgets_on_user_id", using: :btree
   end
 
   create_table "subcategories", force: :cascade do |t|
@@ -99,8 +100,8 @@ ActiveRecord::Schema.define(version: 20170516202330) do
   add_foreign_key "expenses", "subcategories"
   add_foreign_key "expenses", "users"
   add_foreign_key "incomes", "users"
-  add_foreign_key "monthlyBudgets", "subcategories"
-  add_foreign_key "monthlyBudgets", "users"
+  add_foreign_key "monthly_budgets", "subcategories"
+  add_foreign_key "monthly_budgets", "users"
   add_foreign_key "subcategories", "categories"
   add_foreign_key "subcategories", "users"
 end
