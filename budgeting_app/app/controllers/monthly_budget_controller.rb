@@ -4,6 +4,7 @@ class MonthlyBudgetController < ApplicationController
 
   def index
     @user = current_user.id
+    @user_hash = User.find_by_id(current_user.id)
     @cats = Category.where(:user_id => current_user.id)
     @subcats = Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
     @budgets = MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).order(:month_num)

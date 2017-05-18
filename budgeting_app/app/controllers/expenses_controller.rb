@@ -3,12 +3,15 @@ class ExpensesController < ApplicationController
   def index
     @user = current_user.id
     @expense = Expense.where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
+    @year = params[:year]
+    @date = Date.today
+    @month = @date.strftime("%B")
   end
 
   def show
     @user = current_user.id
-    month =  params[:id]
-    @monthExpense = Expense.where(:month => month).where(:year => params[:year]).where(:user_id => current_user.id)
+    @month =  params[:id]
+    @monthExpense = Expense.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
   end
 
   def create

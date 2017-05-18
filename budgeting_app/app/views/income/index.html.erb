@@ -1,66 +1,77 @@
-INCOME
-View and edit income by Month:
-
-<a href="/income/January?year=2017">January</a>
-<a href="/income/February?year=2017">February</a>
-<a href="/income/March?year=2017">March</a>
-<a href="/income/April?year=2017">April</a>
-<a href="/income/May?year=2017">May</a>
-<a href="/income/June?year=2017">June</a>
-<a href="/income/July?year=2017">July</a>
-<a href="/income/August?year=2017">August</a>
-<a href="/income/September?year=2017">September</a>
-<a href="/income/October?year=2017">October</a>
-<a href="/income/November?year=2017">November</a>
-<a href="/income/December?year=2017">December</a>
-
-<br><br>
-Add an income to every month below. If you would like to add an income to one month, please visit that month's page
-<br><br>
-
-<%= form_for :income, url: "/income" do |f| %>
-  <%= label_tag(:description, "Description") %>
-  <%= text_field_tag :description %> <br>
-  <%= label_tag(:amount, "Amount") %>
-  <%= text_field_tag :amount %> <br>
-  <%= label_tag(:day, "Day") %>
-  <%= text_field_tag :day %> <br>
-  <%= label_tag(:month, "Month") %>
-  <%= text_field_tag :month, "ALL", :readonly => true %> <br>
-  <%= label_tag(:year, "Year") %>
-  <%= text_field_tag :year, params[:year] %> <br>
-  <%= hidden_field_tag :user_id, @user_id %>
-  <%= f.submit "Add an Income" %>
-<% end %>
-
-
-<br><br>
-
-
-
-<table border="1">
-  <tr>
-    <th>Description</th>
-    <th>Amount</th>
-    <th>Month</th>
-    <th>Day</th>
-    <th>Year</th>
-    <th>Update?</th>
-    <th>Delete?</th>
-  </tr>
-  <tr>
-<% @recurring.each do |income| %>
-  <tr>
-    <%= form_for :income, url: "/income/#{income.id}", :method => :put do |f| %>
-      <td><%= text_field_tag :description, income.description %></td>
-      <td><%= text_field_tag :amount, income.amount %></td>
-      <td><%= text_field_tag :month, income.month %></td>
-      <td><%= text_field_tag :day, income.day %></td>
-      <td><%= text_field_tag :year, income.year %></td>
-      <td><%= f.submit "Update!" %></td>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6 col-md-offset-3 text-center">
+      <h2>Income</h2>
+    </div>
+    <div class="col-md-8 col-md-offset-2 text-center">
+      <a href="/income/January?year=<%= @year %>">January</a> ●
+      <a href="/income/February?year=<%= @year %>">February</a> ●
+      <a href="/income/March?year=<%= @year %>">March</a> ●
+      <a href="/income/April?year=<%= @year %>">April</a> ●
+      <a href="/income/May?year=<%= @year %>">May</a> ●
+      <a href="/income/June?year=<%= @year %>">June</a> ●
+      <a href="/income/July?year=<%= @year %>">July</a> ●
+      <a href="/income/August?year=<%= @year %>">August</a> ●
+      <a href="/income/September?year=<%= @year %>">September</a> ●
+      <a href="/income/October?year=<%= @year %>">October</a> ●
+      <a href="/income/November?year=<%= @year %>">November</a> ●
+      <a href="/income/December?year=<%= @year %>">December</a>
+    </div>
+    <div class="col-md-6 col-md-offset-3 text-center">
+      <p class="first-p">Congrats on setting up your annual budget! You're ready to start logging income and <a href="/expenses?year=<%= @year %>">expenses</a>.</p>
+      <p class="bottom-p">You can add monthly recurring incomes below. This is a great place to put things like your monthly paycheck. If you would like to add an income to one specific month, please visit that month's page using the links above.</p>
+      <h4>Add cash flow below: </h4>
+    <%= form_for :income, url: "/income" do |f| %>
+      <%= label_tag(:description, "Description") %>
+      <%= text_field_tag :description %> <br>
+      <%= label_tag(:amount, "Amount") %>
+      <%= text_field_tag :amount %> <br>
+      <%= label_tag(:day, "Day") %>
+      <%= text_field_tag :day %> <br>
+      <%= label_tag(:month, "Month") %>
+      <%= text_field_tag :month, "ALL", :readonly => true %> <br>
+      <%= label_tag(:year, "Year") %>
+      <%= text_field_tag :year, params[:year], :readonly => true %> <br>
+      <%= hidden_field_tag :user_id, @user_id %>
+      <%= f.submit "Add an Income", class: "btn btn-info btn-xs" %>
     <% end %>
-      <td><%= link_to 'Destroy', income, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
-  </tr>
-<% end %>
-</tr>
-</table>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h3 class="text-center subcategory-title">Your recurring incomes:</h3>
+</div>
+
+<div class="container-fluid">
+  <div class="row justify-content-md-center">
+    <div class="col-md-10 col-md-offset-1 ">
+      <table border="1" class="table">
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Day</th>
+          <th>Month</th>
+          <th>Year</th>
+          <th>Update?</th>
+          <th>Delete?</th>
+        </tr>
+        <tr>
+      <% @recurring.each do |income| %>
+        <tr>
+          <%= form_for :income, url: "/income/#{income.id}", :method => :put do |f| %>
+            <td><%= text_field_tag :description, income.description %></td>
+            <td><%= text_field_tag :amount, income.amount %></td>
+            <td><%= text_field_tag :day, income.day %></td>
+            <td><%= text_field_tag :month, income.month, :readonly => true %></td>
+            <td><%= text_field_tag :year, income.year, :readonly => true %></td>
+            <td><%= f.submit "Update!", class: "btn btn-info btn-xs" %></td>
+          <% end %>
+            <td><%= link_to 'Destroy', income, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+        </tr>
+      <% end %>
+      </tr>
+      </table>
+    </div>
+  </div>
+</div>
