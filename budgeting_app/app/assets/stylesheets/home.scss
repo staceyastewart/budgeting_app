@@ -18,3 +18,34 @@ body.home{
   -o-background-size: cover;
   background-size: cover;
 }
+
+.signup{
+  // background-color: black;
+  // width: 20vh;
+  margin-top: 21vh;
+}
+
+.ordered {
+    list-style: decimal inside;
+    display: list-item;
+}
+
+#categories{
+  background-color: black;
+}
+
+::placeholder{
+  text-align: center;
+}
+
+.category{
+  padding-top: 4vh;
+}
+
+.bottom-p{
+  padding-bottom: 4vh;
+}
+
+.category_input{
+  margin-bottom: 1vh;
+}

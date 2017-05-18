@@ -7,7 +7,7 @@ class MonthlyBudgetController < ApplicationController
     @cats = Category.where(:user_id => current_user.id)
     @subcats = Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
     @budgets = MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).order(:month_num)
-
+    @year = params[:year]
   end
 
 

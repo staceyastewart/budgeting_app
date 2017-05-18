@@ -1,24 +1,42 @@
-SUBCAT
 
-<%= form_for :subcategories, url: "/subcategories" do |f| %>
-  <%= label_tag(:name, "Name") %>
-  <%= text_field_tag :name %> <br>
-  <%= label_tag(:category, "Category") %>
-  <%= f.collection_select :category,  Category.where(:user_id => current_user.id), :id, :title %> <br>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6 col-md-offset-3 text-center">
+      <h2>Subcategories</h2>
+      <p>Congrats on setting up your categories! You are now ready to set up your subcategories for each category below. Each category must have subcategories.</p>
+      <p>Some examples of subcategories include: restaurants, groceries, and takeout for a food category; cable bill, electricity bill, rent/mortgage, furniture, and upkeep for a home category; metrocard, uber, taxi, car payment, and parking for a transportation category.</p>
+      <p class="bottom-p">Once you have created at least one subcategory for each category, you can move on to <a href="/monthly_budget?year=2017">budget setup</a>.</p>
 
-  <%= hidden_field_tag :user_id, @user %>
-  <%= f.submit "Add a new Category!" %>
-<% end %>
+      <%= form_for :subcategories, url: "/subcategories" do |f| %>
+        <%= label_tag(:name, "Create a subcategory:") %><br>
+        <%= text_field_tag :name, nil, placeholder: "Your subcategory", class: "category_input" %> <br>
+        <%= label_tag(:category, "Category:") %><br>
+        <%= f.collection_select :category,  Category.where(:user_id => current_user.id), :id, :title, class: "drop-down-category" %> <br>
 
-
-<% @cats.each do |x| %>
-  <h4><%= x[:title] %></h4>
-  <% @subcats.each do |y| %>
-    <ul>
-    <% if y[1] == x.id %>
-      <li><%= y[0] %></li>
-    <% end %>
-    </ul>
-  <% end %>
-
-<% end %>
+        <%= hidden_field_tag :user_id, @user %>
+        <%= f.submit "Add Subcategory!", class: "btn btn-info btn-xs" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <h4 class="text-center subcategory-title">Your categories & subcategories:</h4>
+</div>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-2 col-md-offset-5">
+      <ol class="list-group category">
+        <% @cats.each do |x| %>
+          <li class="list-group-item ordered "><strong><%= x[:title] %></strong></li>
+          <% @subcats.each do |y| %>
+            <!-- <ul > -->
+            <% if y[1] == x.id %>
+              <li class="list-group-item "> - <%= y[0] %></li>
+            <% end %>
+            <!-- </ul> -->
+          <% end %>
+        <% end %>
+      </ol>
+    </div>
+  </div>
+</div>
