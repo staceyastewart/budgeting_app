@@ -9,11 +9,11 @@ module DetailsHelper
         return "<td> #{number_to_currency(total_budget)} </td> <td> #{number_to_currency(total_expense)} </td> <td> #{number_to_currency(total_budget - total_expense)}</td>".html_safe
       end
     elsif total_budget
-      return "<td> #{number_to_currency(total_budget)} </td> <td> 0</td> <td> #{number_to_currency(total_budget)}</td>".html_safe
+      return "<td> #{number_to_currency(total_budget)} </td> <td> -</td> <td> #{number_to_currency(total_budget)}</td>".html_safe
     elsif total_expense
-      return "<td> 0 </td> <td> #{number_to_currency(total_expense)} </td> <td style='color:red'> #{number_to_currency(-total_expense)}</td>".html_safe
+      return "<td> - </td> <td> #{number_to_currency(total_expense)} </td> <td style='color:red'> #{number_to_currency(-total_expense)}</td>".html_safe
     else
-      return "<td> 0 </td> <td> 0 </td> <td> 0 </td>".html_safe
+      return "<td> - </td> <td> - </td> <td> - </td>".html_safe
     end
   end
 
@@ -31,9 +31,9 @@ module DetailsHelper
 
   def difference(num1, num2)
     if num1 - num2 < 0
-      return "<td style='color:red'> #{num1 - num2} </td>".html_safe
+      return "<td style='color:red'> #{number_to_currency(num1 - num2)} </td>".html_safe
     else
-      return "<td> #{num1 - num2} </td>".html_safe
+      return "<td> #{number_to_currency(num1 - num2)} </td>".html_safe
     end
   end
 end

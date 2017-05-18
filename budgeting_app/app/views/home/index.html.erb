@@ -1,21 +1,18 @@
 <% if user_signed_in? %>
-  <h1>SIGNED IN</h1>
-  <a href="/categories"> Categories</a>
-  <a href="/subcategories">Subcategories</a>
-  <a href="/monthly_budget?year=2017">Budget Setup</a>
-  <a href="/income?year=2017">Income</a>
-  <a href="/expenses?year=2017">Expenses</a>
-  <a href="/details?year=2017&month=<%= @month %>" >Details</a>
+
 
 
 
 <% else %>
-<div class="homeBackground">
-
-  <h1 id="mainTitle">Welcome to Budgeting!</h1>
-  <p>We help you stay on a budget and see where your money is going!<br>To learn more please login or sign-up below.</p>
-  <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
-  <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
-</div>
-
+  <body class=home>
+    <div class="homeBackground">
+      <h1 id="mainTitle">Welcome to Meticulous!</h1>
+      <p>We help you stay on a budget and see where your money is going!<br>To learn more please login or sign-up below.</p>
+      <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+      <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+    </div>
+  </body>
 <% end %>
+
+
+

@@ -103,7 +103,7 @@ class ExpensesController < ApplicationController
       allToDelete.destroy_all
       redirect_to :back
     else
-      toDelete.destroy_all
+      toDelete.destroy
       redirect_to :back
     end
   end

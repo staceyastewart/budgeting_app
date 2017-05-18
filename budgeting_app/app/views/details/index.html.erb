@@ -1,4 +1,3 @@
-
 <a href="/details?year=2017&month=January">January</a>
 <a href="/details?year=2017&month=February">February</a>
 <a href="/details?year=2017&month=March">March</a>
@@ -12,7 +11,11 @@
 <a href="/details?year=2017&month=November">November</a>
 <a href="/details?year=2017&month=December">December</a>
 
+
+
 <br><br><br><br>
+
+
 
 <table border="1">
   <tr>
@@ -21,11 +24,11 @@
   </tr>
   <tr>
     <td>Month Budget</td>
-    <td><%= @user.total_month_budget(@month, @year) %></td>
+    <td><%= number_to_currency(@user.total_month_budget(@month, @year)) %></td>
   </tr>
   <tr>
     <td>Month Actual</td>
-    <td><%= @user.total_month_expense(@month, @year) %></td>
+    <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
   </tr>
   <tr>
     <td>Difference</td>
