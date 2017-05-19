@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6 col-md-offset-3 text-center">
+      <h2 class="month-title"><%= @month %></h2>
+      <p class="bottom-p">On this page, you can add monthly incomes. You can also edit and delete monthly and recurring incomes.</p>
+      <h4>Add cash flow below: </h4>
+      <%= form_for :income, url: "/income" do |f| %>
+        <%= label_tag(:description, "Description") %>
+        <%= text_field_tag :description %> <br>
+        <%= label_tag(:amount, "Amount") %>
+        <%= text_field_tag :amount %> <br>
+        <%= label_tag(:day, "Day") %>
+        <%= text_field_tag :day %> <br>
+        <%= label_tag(:month, "Month") %>
+        <%= text_field_tag :month, params["id"] %> <br>
+        <%= label_tag(:year, "Year") %>
+        <%= text_field_tag :year, params[:year] %> <br>
+        <%= hidden_field_tag :user_id, @user_id %>
+        <%= f.submit "Add an Income", class: "btn btn-info btn-xs" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h3 class="text-center subcategory-title">Your <%= @month %> incomes:</h3>
+</div>
+
+<div class="container-fluid">
+  <div class="row justify-content-md-center">
+    <div class="col-md-10 col-md-offset-1 ">
+      <table border="1" class="table">
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Month</th>
+          <th>Day</th>
+          <th>Year</th>
+          <th>Update?</th>
+          <th>Delete?</th>
+        </tr>
+      <% @monthIncome.each do |income| %>
+        <tr>
+          <%= form_for :income, url: "/income/#{income.id}", :method => :put do |f| %>
+            <td><%= text_field_tag :description, income.description %></td>
+            <td><%= text_field_tag :amount, income.amount %></td>
+            <td><%= text_field_tag :month, income.month %></td>
+            <td><%= text_field_tag :day, income.day %></td>
+            <td><%= text_field_tag :year, income.year %></td>
+            <td><%= f.submit "Update!" %></td>
+          <% end %>
+            <td><%= link_to 'Destroy', income, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+        </tr>
+      <% end %>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6 col-md-offset-3 text-center">
+      <h2>Expenses</h2>
+    </div>
+    <div class="col-md-8 col-md-offset-2 text-center">
+      <a href="/expenses/January?year=<%= @year %>">January</a> ●
+      <a href="/expenses/February?year=<%= @year %>">February</a> ●
+      <a href="/expenses/March?year=<%= @year %>">March</a> ●
+      <a href="/expenses/April?year=<%= @year %>">April</a> ●
+      <a href="/expenses/May?year=<%= @year %>">May</a> ●
+      <a href="/expenses/June?year=<%= @year %>">June</a> ●
+      <a href="/expenses/July?year=<%= @year %>">July</a> ●
+      <a href="/expenses/August?year=<%= @year %>">August</a> ●
+      <a href="/expenses/September?year=<%= @year %>">September</a> ●
+      <a href="/expenses/October?year=<%= @year %>">October</a> ●
+      <a href="/expenses/November?year=<%= @year %>">November</a> ●
+      <a href="/expenses/December?year=<%= @year %>">December</a>
+      </div>
+        <div class="col-md-6 col-md-offset-3 text-center">
+          <p class="first-p">Congrats on setting up your annual budget! You're ready to start logging expenses and <a href="/income?year=<%= @year %>">income</a>.</p>
+          <p>You can add monthly recurring expenses below. This is a great place to put things like your rent or mortgage payments, car payments, and insurance payments that remain the same amount every month. If you would like to add expenses to one specific month, please visit that month's page using the links above.</p>
+          <p class="bottom-p">To track your progress throughout the month, visit the <a href="/details?year=<%= @year %>&month=<%= @month %>">details</a> page.</p>
+          <h4>Add an expense below: </h4>
+      <%= form_for :expenses, url: "/expenses" do |f| %>
+        <%= label_tag(:description, "Description") %>
+        <%= text_field_tag :description %> <br>
+        <%= label_tag(:amount, "Amount") %>
+        <%= text_field_tag :amount %> <br>
+        <%= label_tag(:subcategory, "Subcategory") %>
+        <%= f.collection_select :subcategory,  Subcategory.where(:user_id => current_user.id), :id, :name %><br>
+        <%= label_tag(:day, "Day") %>
+        <%= f.select :day, (1..31) %>
+        <%= label_tag(:month, "Month") %>
+        <%= text_field_tag :month, "ALL", :readonly => true %>
+        <%= label_tag(:year, "Year") %>
+        <%= text_field_tag :year, params[:year], :readonly => true %>
+        <%= hidden_field_tag :user_id, @user %>
+        <%= f.submit "Add an Expense", class: "btn btn-info btn-xs" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <h3 class="text-center subcategory-title">Your recurring expenses:</h3>
+</div>
+<div class="container-fluid">
+  <div class="row justify-content-md-center">
+    <div class="col-md-10 col-md-offset-1 ">
+      <table border="1" class="table">
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Day</th>
+          <th>Month</th>
+          <th>Year</th>
+          <th>Update?</th>
+          <th>Delete?</th>
+        </tr>
+        <% @expense.each do |expense| %>
+          <tr>
+            <%= form_for :expense, url: "/expenses/#{expense.id}", :method => :put do |f| %>
+              <td><%= text_field_tag :description, expense.description %></td>
+              <td><%= text_field_tag :amount, expense.amount %></td>
+              <td><%= text_field_tag :day, expense.day %></td>
+              <td><%= text_field_tag :month, expense.month, :readonly => true %></td>
+              <td><%= text_field_tag :year, expense.year, :readonly => true %></td>
+              <td><%= f.submit "Update!", class: "btn btn-info btn-xs" %></td>
+            <% end %>
+              <td><%= link_to 'Destroy', expense, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>

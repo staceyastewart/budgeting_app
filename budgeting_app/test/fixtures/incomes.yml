@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  month: MyString
+  day: MyString
+  year: MyString
+  amount: 1.5
+  description: MyString
+  isrecurring: false
+  references: 
+
+two:
+  month: MyString
+  day: MyString
+  year: MyString
+  amount: 1.5
+  description: MyString
+  isrecurring: false
+  references: 

@@ -1,0 +1,81 @@
+// Place all the styles related to the Home controller here.
+// They will automatically be included in application.css.
+
+.homeBackground {
+  text-align: center;
+}
+
+#mainTitle{
+  margin-top: 70vh;
+  text-align: center;
+  font-size: 3em;
+}
+
+body.home{
+  background: url("background.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.signup{
+  // background-color: black;
+  // width: 20vh;
+  margin-top: 21vh;
+}
+
+.ordered {
+    list-style: decimal inside;
+    display: list-item;
+}
+
+#categories{
+  background-color: black;
+}
+
+::placeholder{
+  text-align: center;
+}
+
+.category{
+  padding-top: 4vh;
+}
+
+.bottom-p{
+  padding-bottom: 4vh;
+}
+
+.category_input{
+  margin-bottom: 1vh;
+}
+
+.login {
+    font-size: 20px;
+    position: absolute;
+    font-weight: 100;
+    background: rgba(255, 255, 255, 0.7);
+    color: black;
+    padding: 2rem;
+    width: 45%;
+    height: 49%;
+    margin: 2rem;
+    left: 24%;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.sign-up{
+    font-size: 20px;
+    position: absolute;
+    font-weight: 100;
+    background: rgba(255, 255, 255, 0.7);
+    color: black;
+    padding: 2rem;
+    width: 45%;
+    height: 60%;
+    margin: 2rem;
+    left: 24%;
+    font-size: 1.2rem;
+    text-align: center;
+}
