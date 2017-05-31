@@ -1,5 +1,5 @@
 class Category < ApplicationRecord
-  has_many :subcategories
+  has_many :subcategories, dependent: :destroy
 
   #below method will return the total budget for one category for one month in one year
   def month_budget_by_category(month, year, user)

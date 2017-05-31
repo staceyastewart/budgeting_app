@@ -32,8 +32,8 @@
         <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li> -->
         <li><a href="/categories"> Categories</a></li>
         <li><a href="/subcategories">Subcategories</a></li>
-        <li><a href="/monthly_budget?year=2017">Budget Setup</a></li>
-        <li><a href="/income?year=2017">Income</a></li>
+        <li><a href="/monthly_budget?year=<%= Time.now.year %>">Budget Setup</a></li>
+        <li><a href="/income?year=<%= Time.now.year %>">Income</a></li>
 
      <!--    <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -48,8 +48,8 @@
           </ul>
         </li> -->
 
-        <li><a href="/expenses?year=2017">Expenses</a></li>
-        <li><a href="/details?year=2017&month=<%= @month %>" >Details</a></li>
+        <li><a href="/expenses?year=<%= Time.now.year %>">Expenses</a></li>
+        <li><a href="/details?year=<%= Time.now.year %>&month=<%= Date.today.strftime("%B") %>" >Details</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to 'Edit Profile', edit_user_registration_path, :class => 'navbar-link' %></li>

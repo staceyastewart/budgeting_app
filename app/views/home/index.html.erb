@@ -1,5 +1,26 @@
 <% if user_signed_in? %>
 
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 text-center">
+      <h3 class="text-center">Welcome to Meticulous</h3>
+      <p class="home_blurb">We're excited to help you start budgeting! Our budget system will help you see clearly where your money is going. You will also see where you can cut back on expenses and where you have room to spend more on things you care about. Please follow the steps below in order to set up your budget and start tracking your income and expenses.  </p>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4 text-center">
+      <ol>
+        <li class="home_list">● First, set up your <a href="/categories">categories</a>.</li>
+        <li class="home_list">● Next, set up your <a href="/subcategories">subcategories</a>. </li>
+        <li class="home_list">● Then, set up your <a href="/monthly_budget?year=<%= @year %>">annual budget</a>. </li>
+        <li class="home_list">● After the three steps above, you will be ready to log your <a href="/income">income</a> and <a href="/expenses">expenses</a>. </li>
+        <li class="home_list">● To view your progress for each month, visit the <a href="/details?year=<%= @year %>&month=<%= @month %>">details</a> page.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
 
 
 
