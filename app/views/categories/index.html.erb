@@ -31,9 +31,9 @@
           <tr>
           <%= form_for :categories, url: "/categories/#{category.id}", :method => :put do |f| %>
             <td><%= text_field_tag :title, category.title %></td>
-            <td><%= f.submit "Update!", class: "btn btn-info btn-xs" %></td>
+            <td><%= f.submit "Update!", class: "btn btn-success btn-xs" %></td>
           <% end %>
-            <td><%= link_to 'Destroy', category, data: {:confirm => 'Are you sure? Deleting this category will delete all subcategories associated as well as any expenses related.'}, :method => :delete %></td>
+            <td><%= link_to 'Delete', category, data: {:confirm => 'Are you sure? Deleting this category will delete all subcategories associated as well as any expenses related.'}, :method => :delete %></td>
         </tr>
         <% end %>
     </div>
