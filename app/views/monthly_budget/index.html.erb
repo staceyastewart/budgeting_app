@@ -34,18 +34,18 @@
         <tr>
           <th>CATEGORY</th>
           <th>Subcategory</th>
-          <th><a href="/monthly_budget/January">Jan</a></th>
-          <th><a href="/monthly_budget/February">Feb</a></th>
-          <th><a href="/monthly_budget/March">Mar</a></th>
-          <th><a href="/monthly_budget/April">Apr</a></th>
-          <th><a href="/monthly_budget/May">May</a></th>
-          <th><a href="/monthly_budget/June">Jun</a></th>
-          <th><a href="/monthly_budget/July">Jul</a></th>
-          <th><a href="/monthly_budget/August">Aug</a></th>
-          <th><a href="/monthly_budget/September">Sep</a></th>
-          <th><a href="/monthly_budget/October">Oct</a></th>
-          <th><a href="/monthly_budget/November">Nov</a></th>
-          <th><a href="/monthly_budget/December">Dec</a></th>
+          <th><a href="/monthly_budget/January?year=<%= @year %>">Jan</a></th>
+          <th><a href="/monthly_budget/February?year=<%= @year %>">Feb</a></th>
+          <th><a href="/monthly_budget/March?year=<%= @year %>">Mar</a></th>
+          <th><a href="/monthly_budget/April?year=<%= @year %>">Apr</a></th>
+          <th><a href="/monthly_budget/May?year=<%= @year %>">May</a></th>
+          <th><a href="/monthly_budget/June?year=<%= @year %>">Jun</a></th>
+          <th><a href="/monthly_budget/July?year=<%= @year %>">Jul</a></th>
+          <th><a href="/monthly_budget/August?year=<%= @year %>">Aug</a></th>
+          <th><a href="/monthly_budget/September?year=<%= @year %>">Sep</a></th>
+          <th><a href="/monthly_budget/October?year=<%= @year %>">Oct</a></th>
+          <th><a href="/monthly_budget/November?year=<%= @year %>">Nov</a></th>
+          <th><a href="/monthly_budget/December?year=<%= @year %>">Dec</a></th>
           <th>Delete</th>
         </tr>
         <% @cats.each do |cat| %>

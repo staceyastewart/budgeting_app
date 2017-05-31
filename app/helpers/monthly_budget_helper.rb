@@ -57,4 +57,19 @@ module MonthlyBudgetHelper
     ".html_safe
   end
 
+
+  def category_totals_by_month_individual(category, year, user)
+    month = category.month_budget_by_category(params[:id], year, user)
+    return "
+      <td class='text-center warning'> #{month} </td>
+     ".html_safe
+  end
+
+  def overall_total_by_month_individual(user, year)
+    month = user.total_month_budget(params[:id], year)
+    return "
+      <td class='text-center success'> #{month} </td>
+    ".html_safe
+  end
+
 end

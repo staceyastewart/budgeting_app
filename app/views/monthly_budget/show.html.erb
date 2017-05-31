@@ -1,0 +1,43 @@
+show
+
+
+<div class="container-fluid">
+  <div class="row justify-content-md-center">
+    <div class="col-md-10 col-md-offset-1 ">
+      <table border="1" class="table">
+        <tr>
+          <th>CATEGORY</th>
+          <th>Subcategory</th>
+          <th><%= @month %></th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+        <% @cats.each do |cat| %>
+            <% @subcats.each do |subcategory| %>
+              <% if subcategory[1] == cat.id %>
+                <tr>
+                  <td><%= cat. title %></td>
+                  <td><%= subcategory[0] %></td>
+                  <% @budgets.each do |budget| %>
+                    <% if budget.subcategory_id == subcategory[2] %>
+                      <td class="text-center"><%= budget.amount %></td>
+                      <td><%= link_to 'Destroy', budget, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+                    <% end %>
+                  <% end %>
+
+                </tr>
+              <% end %>
+            <% end %>
+              <tr>
+                <td colspan="2" class="warning"><strong><%= cat.title.upcase %> TOTAL</strong></td>
+                <%= category_totals_by_month_individual(cat, @year, @user) %>
+              </tr>
+        <% end %>
+          <tr>
+            <td colspan="2" class="success"><strong>BUDGET TOTAL</strong></td>
+            <%= overall_total_by_month_individual(@user_hash, @year) %>
+          </tr>
+      </table>
+    </div>
+  </div>
+</div>

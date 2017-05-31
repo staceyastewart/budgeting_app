@@ -13,12 +13,21 @@ class MonthlyBudgetController < ApplicationController
 
 
   def show
+    @user = current_user.id
+    @user_hash = User.find_by_id(current_user.id)
     # @user_id = current_user.id
-    # month = params[:id]
+    month = params[:id]
+    @month = params[:id]
+    @year = Time.now.year
     # @subcat = Subcategory.where(:user_id => current_user.id).select("DISTINCT ON (name) *")
-    # @monthlyBudget = Subcategory
-    #   .where(:user_id => current_user.id)
-    #   .where(:month => month)
+    @cats = Category.where(:user_id => current_user.id)
+    @subcats = Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
+    @budgets = MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).where(:month => params[:id])
+
+
+    @monthlyBudget = Subcategory
+      .where(:user_id => current_user.id)
+      .where(:month => month)
   end
 
 
