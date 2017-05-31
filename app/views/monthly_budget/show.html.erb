@@ -3,14 +3,13 @@ show
 
 <div class="container-fluid">
   <div class="row justify-content-md-center">
-    <div class="col-md-10 col-md-offset-1 ">
+    <div class="col-md-6 col-md-offset-3 ">
       <table border="1" class="table">
         <tr>
           <th>CATEGORY</th>
           <th>Subcategory</th>
           <th><%= @month %></th>
           <th>Update</th>
-          <th>Delete</th>
         </tr>
         <% @cats.each do |cat| %>
             <% @subcats.each do |subcategory| %>
@@ -20,8 +19,10 @@ show
                   <td><%= subcategory[0] %></td>
                   <% @budgets.each do |budget| %>
                     <% if budget.subcategory_id == subcategory[2] %>
-                      <td class="text-center"><%= budget.amount %></td>
-                      <td><%= link_to 'Destroy', budget, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+                      <%= form_for :budget, url: "/monthly_budget/#{budget.id}", :method => :put do |f| %>
+                        <td><%= text_field_tag :amount, budget.amount %></td>
+                        <td><%= f.submit "Update!", class: "btn btn-success btn-xs" %></td>
+                      <% end %>
                     <% end %>
                   <% end %>
 

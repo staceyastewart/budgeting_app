@@ -9,6 +9,8 @@ class MonthlyBudgetController < ApplicationController
     @subcats = Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
     @budgets = MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).order(:month_num)
     @year = params[:year]
+    # @date = Date.today
+    # @month = @date.strftime("%B")
   end
 
 
@@ -52,35 +54,35 @@ class MonthlyBudgetController < ApplicationController
     redirect_to :back
   end
 
-  def edit
-    # puts "EDIT"
-    # puts params
-
-  end
 
   def update
-    # puts "UPDATE"
-    # @subcategory = Subcategory.find_by_id(params[:id])
-    # puts params
-    # return unless @subcategory.user_id === current_user.id
-    # @subcategory.update(
-    #   name: params[:name],
-    #   amount: params[:amount],
-    #   category: params[:category],
-    #   month: params[:budget][:month],
-    #   year: params[:year],
-    #   user_id: params[:user_id]
-    #   )
-    # redirect_to :back
+    @budget = MonthlyBudget.find_by_id(params[:id])
+    p params
+    return unless @budget.user_id === current_user.id
+    @budget.update(
+      amount: params[:amount]
+      )
+    redirect_to :back
   end
 
 
   def destroy
-    firstDelete = MonthlyBudget.where(:id => params[:id])
-    allToDeleteId =  firstDelete.first.subcategory_id
-    budgetToDelete = MonthlyBudget.where(:subcategory_id => allToDeleteId)
-    budgetToDelete.destroy_all
-    redirect_to :back
+    puts params
+    puts params[:id]
+    p params
+    puts @month
+    puts params[:month]
+    if params[:month]
+      firstDelete = MonthlyBudget.where(:id => params[:id])
+      firstDelete.destroy_all
+      redirect_to :back
+    else
+      firstDelete = MonthlyBudget.where(:id => params[:id])
+      allToDeleteId =  firstDelete.first.subcategory_id
+      budgetToDelete = MonthlyBudget.where(:subcategory_id => allToDeleteId)
+      budgetToDelete.destroy_all
+      redirect_to :back
+    end
   end
 
 end
