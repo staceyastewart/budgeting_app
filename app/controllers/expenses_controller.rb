@@ -77,24 +77,37 @@ class ExpensesController < ApplicationController
 
   def update
     @expenseToEdit = Expense.find_by_id(params[:id])
-    p @expenseToEdit.month.class
+    # p @expenseToEdit.month.class
+    p params
+    p @expenseToEdit
     return unless @expenseToEdit.user_id === current_user.id
     if @expenseToEdit.month == "ALL"
-      puts "YES ALL OF THEM"
+      # puts "YES ALL OF THEM"
       @allToUpdate = Expense.where(day: @expenseToEdit[:day]).where(description: @expenseToEdit[:description]).where(year: @expenseToEdit[:year]).where(:user_id => current_user.id)
       p @allToUpdate
       @allToUpdate.update(
         description: params[:description],
         amount: params[:amount],
+        # subcategory: params[:subcategory],
         day: params[:day])
       redirect_to :back
     else
-      puts "NO NOT HITTING"
-      @expenseToEdit.update(
-        description: params[:description],
-        amount: params[:amount],
-        day: params[:day] )
-      redirect_to :back
+      if params[:expense][:subcategory].blank?
+        # puts "NO NOT HITTING"
+        @expenseToEdit.update(
+          description: params[:description],
+          amount: params[:amount],
+          # subcategory: params[:expense][:subcategory],
+          day: params[:day] )
+        redirect_to :back
+      else
+        @expenseToEdit.update(
+          description: params[:description],
+          amount: params[:amount],
+          subcategory: Subcategory.find_by_id(params[:expense][:subcategory]),
+          day: params[:day] )
+        redirect_to :back
+      end
     end
   end
 
