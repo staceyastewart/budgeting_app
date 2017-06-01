@@ -15,9 +15,3 @@
  */
 *= require bootstrap
 
-.home_list{
-  list-style-type: none;
-  padding-bottom: .25em;
-  padding-left: 0;
-  margin-left: -4em;
-}
