@@ -51,4 +51,14 @@ module DetailsHelper
       return "<td> #{number_to_currency(num1 - num2)} </td>".html_safe
     end
   end
+
+  def total_income(month, year, user)
+    total = 0
+    if user.incomes.where(:month => month).where(:year => year).length > 0
+      total = user.incomes.where(:month => month).where(:year => year).pluck(:amount).reduce(:+) + total
+    end
+    return total
+  end
+
+
 end

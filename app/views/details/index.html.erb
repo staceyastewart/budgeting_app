@@ -25,6 +25,7 @@
   </div>
 </div>
 <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+
 <div class="container">
   <div class="row">
     <div class="col-md-6">
@@ -37,27 +38,50 @@
     </div>
   </div>
 </div>
-<div class="container-fluid">
-  <div class="row justify-content-md-center">
+
+<div class="container">
+  <div class="row">
     <div class="col-md-10 col-md-offset-1 ">
-      <table border="1" class="table">
-        <tr>
-          <th>Spending</th>
-          <th>Total</th>
-        </tr>
-        <tr>
-          <td>Month Budget</td>
-          <td><%= number_to_currency(@user.total_month_budget(@month, @year)) %></td>
-        </tr>
-        <tr>
-          <td>Month Actual</td>
-          <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
-        </tr>
-        <tr>
-          <td>Difference</td>
-          <%= difference(@user.total_month_budget(@month, @year), @user.total_month_expense(@month, @year)) %>
-        </tr>
-      </table>
+      <div class="col-md-6">
+        <table border="1" class="table">
+          <tr>
+            <th>Spending</th>
+            <th>Total</th>
+          </tr>
+          <tr>
+            <td>Month Budget</td>
+            <td><%= number_to_currency(@user.total_month_budget(@month, @year)) %></td>
+          </tr>
+          <tr>
+            <td>Month Actual</td>
+            <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
+          </tr>
+          <tr>
+            <td>Difference</td>
+            <%= difference(@user.total_month_budget(@month, @year), @user.total_month_expense(@month, @year)) %>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <table border="1" class="table">
+          <tr>
+            <th>Savings</th>
+            <th>Total</th>
+          </tr>
+          <tr>
+            <td>Net Income</td>
+            <td><%= number_to_currency(total_income(@month, @year, @user)) %></td>
+          </tr>
+          <tr>
+            <td>Month Actual Spend</td>
+            <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
+          </tr>
+          <tr>
+            <td>Difference</td>
+            <%= difference(total_income(@month, @year, @user), @user.total_month_expense(@month, @year)) %>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
