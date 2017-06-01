@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :categories
   has_many :expenses
   has_many :incomes
+  has_many :monthly_budgets
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
