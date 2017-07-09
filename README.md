@@ -17,3 +17,7 @@ I set out to recreate the Excel document I use to track my spending currently, c
 You start by setting up categories and subcategories that you use to track your expenses. After setting these up, you can set up your annual budget that will fill each month with the budgeted amount you choose. If you would like to edit a specific month's budget for any subcategory, you can click into that month and update it there.
 
 >![photoOfOurApp](app/assets/images/annual_budget.png)
+
+After setting up the yer's budget, you can log your income and expenses on the respective pages. Throughout the month, you can visit the details page to see how well you are sticking to your budget.
+
+>![photoOfOurApp](app/assets/images/details.png)
