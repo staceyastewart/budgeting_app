@@ -9,3 +9,7 @@ password: password123
 ```
 
 >![photoOfOurApp](app/assets/images/home_screen.png)
+
+I set out to recreate the Excel document I use to track my spending currently, called [Savvy Spreadsheets](https://www.savvyspreadsheets.com/)
+
+>![photoOfOurApp](app/assets/images/savvy_spreadsheets.png)
