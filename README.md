@@ -13,3 +13,7 @@ password: password123
 I set out to recreate the Excel document I use to track my spending currently, called [Savvy Spreadsheets](https://www.savvyspreadsheets.com/)
 
 >![photoOfOurApp](app/assets/images/savvy_spreadsheets.png)
+
+You start by setting up categories and subcategories that you use to track your expenses. After setting these up, you can set up your annual budget that will fill each month with the budgeted amount you choose. If you would like to edit a specific month's budget for any subcategory, you can click into that month and update it there.
+
+>![photoOfOurApp](app/assets/images/annual_budget.png)
