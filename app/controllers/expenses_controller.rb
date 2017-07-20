@@ -2,6 +2,7 @@ class ExpensesController < ApplicationController
 
   def index
     @user = current_user.id
+    @user_hash = User.find_by_id(current_user.id)
     @expense = Expense.where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
     @year = params[:year]
     @date = Date.today
