@@ -1,128 +1,140 @@
-
-<% if @user.expenses.length > 0 && @user.monthly_budgets.length > 0 %>
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-md-6 col-md-offset-3 text-center">
-      <h2>Details</h2>
-    </div>
-    <div class="col-md-8 col-md-offset-2 text-center">
-      <a href="/details?year=<%= @year %>&month=January">January</a>
-      <a href="/details?year=<%= @year %>&month=February">February</a>
-      <a href="/details?year=<%= @year %>&month=March">March</a>
-      <a href="/details?year=<%= @year %>&month=April">April</a>
-      <a href="/details?year=<%= @year %>&month=May">May</a>
-      <a href="/details?year=<%= @year %>&month=June">June</a>
-      <a href="/details?year=<%= @year %>&month=July">July</a>
-      <a href="/details?year=<%= @year %>&month=August">August</a>
-      <a href="/details?year=<%= @year %>&month=September">September</a>
-      <a href="/details?year=<%= @year %>&month=October">October</a>
-      <a href="/details?year=<%= @year %>&month=November">November</a>
-      <a href="/details?year=<%= @year %>&month=December">December</a>
-    </div>
-    <div class="col-md-6 col-md-offset-3 text-center">
-    <p class="first-p">Below is the tracking for the current month. To view a different month, please use the links above.</p>
-    </div>
-  </div>
-</div>
-<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <h3 class="text-center">Budget Spending</h3>
-      <%= pie_chart @user.total_month_budget_by_category(@month, @year) %>
-    </div>
-    <div class="col-md-6">
-      <h3 class="text-center">Actual Spending</h3>
-      <%= pie_chart @user.total_month_expense_by_category(@month, @year) %>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1 ">
-      <div class="col-md-6">
-        <table border="1" class="table">
-          <tr>
-            <th>Spending</th>
-            <th>Total</th>
-          </tr>
-          <tr>
-            <td>Month Budget</td>
-            <td><%= number_to_currency(@user.total_month_budget(@month, @year)) %></td>
-          </tr>
-          <tr>
-            <td>Month Actual</td>
-            <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
-          </tr>
-          <tr>
-            <td>Difference</td>
-            <%= difference(@user.total_month_budget(@month, @year), @user.total_month_expense(@month, @year)) %>
-          </tr>
-        </table>
+<% if each_category_has_child(@user)  %>
+<!-- if every category has a subcategory show -->
+  <% if @user.expenses.length > 0 && @user.monthly_budgets.length > 0 %>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <h2>Details</h2>
       </div>
-      <div class="col-md-6">
-        <table border="1" class="table">
-          <tr>
-            <th>Savings</th>
-            <th>Total</th>
-          </tr>
-          <tr>
-            <td>Net Income</td>
-            <td><%= number_to_currency(total_income(@month, @year, @user)) %></td>
-          </tr>
-          <tr>
-            <td>Month Actual Spend</td>
-            <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
-          </tr>
-          <tr>
-            <td>Difference</td>
-            <%= difference(total_income(@month, @year, @user), @user.total_month_expense(@month, @year)) %>
-          </tr>
-        </table>
+      <div class="col-md-8 col-md-offset-2 text-center">
+        <a href="/details?year=<%= @year %>&month=January">January</a>
+        <a href="/details?year=<%= @year %>&month=February">February</a>
+        <a href="/details?year=<%= @year %>&month=March">March</a>
+        <a href="/details?year=<%= @year %>&month=April">April</a>
+        <a href="/details?year=<%= @year %>&month=May">May</a>
+        <a href="/details?year=<%= @year %>&month=June">June</a>
+        <a href="/details?year=<%= @year %>&month=July">July</a>
+        <a href="/details?year=<%= @year %>&month=August">August</a>
+        <a href="/details?year=<%= @year %>&month=September">September</a>
+        <a href="/details?year=<%= @year %>&month=October">October</a>
+        <a href="/details?year=<%= @year %>&month=November">November</a>
+        <a href="/details?year=<%= @year %>&month=December">December</a>
+      </div>
+      <div class="col-md-6 col-md-offset-3 text-center">
+      <p class="first-p">Below is the tracking for the current month. To view a different month, please use the links above.</p>
       </div>
     </div>
   </div>
-</div>
+  <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
 
-<div class="container-fluid">
-  <div class="row justify-content-md-center">
-    <div class="col-md-10 col-md-offset-1 ">
-      <table border="1" class="table">
-        <tr>
-          <th>Category</th>
-          <th>Subcategory</th>
-          <th>Budget</th>
-          <th>Actual</th>
-          <th>Difference</th>
-        </tr>
-        <% @categories.each do |category| %>
-         <% category.subcategories.each do |subcategories| %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="text-center">Budget Spending</h3>
+        <%= pie_chart @user.total_month_budget_by_category(@month, @year) %>
+      </div>
+      <div class="col-md-6">
+        <h3 class="text-center">Actual Spending</h3>
+        <%= pie_chart @user.total_month_expense_by_category(@month, @year) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1 ">
+        <div class="col-md-6">
+          <table border="1" class="table">
             <tr>
-              <td><%= category.title %></td>
-              <td><%= subcategories.name %></td>
-              <%= budget_display(subcategories) %>
+              <th>Spending</th>
+              <th>Total</th>
             </tr>
-          <% end %>
+            <tr>
+              <td>Month Budget</td>
+              <td><%= number_to_currency(@user.total_month_budget(@month, @year)) %></td>
+            </tr>
+            <tr>
+              <td>Month Actual</td>
+              <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
+            </tr>
+            <tr>
+              <td>Difference</td>
+              <%= difference(@user.total_month_budget(@month, @year), @user.total_month_expense(@month, @year)) %>
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table border="1" class="table">
+            <tr>
+              <th>Savings</th>
+              <th>Total</th>
+            </tr>
+            <tr>
+              <td>Net Income</td>
+              <td><%= number_to_currency(total_income(@month, @year, @user)) %></td>
+            </tr>
+            <tr>
+              <td>Month Actual Spend</td>
+              <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
+            </tr>
+            <tr>
+              <td>Difference</td>
+              <%= difference(total_income(@month, @year, @user), @user.total_month_expense(@month, @year)) %>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row justify-content-md-center">
+      <div class="col-md-10 col-md-offset-1 ">
+        <table border="1" class="table">
           <tr>
-              <td colspan="2" class="warning"><strong><%= category.title.capitalize %> Month Total</strong></td>
-              <%= total_display(category) %>
-            </tr>
-        <% end %>
-      </table>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Budget</th>
+            <th>Actual</th>
+            <th>Difference</th>
+          </tr>
+          <% @categories.each do |category| %>
+           <% category.subcategories.each do |subcategories| %>
+              <tr>
+                <td><%= category.title %></td>
+                <td><%= subcategories.name %></td>
+                <%= budget_display(subcategories) %>
+              </tr>
+            <% end %>
+            <tr>
+                <td colspan="2" class="warning"><strong><%= category.title.capitalize %> Month Total</strong></td>
+                <%= total_display(category) %>
+              </tr>
+          <% end %>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 
-<% else %>
+  <% else %>
 
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-md-6 col-md-offset-3 text-center">
-    <h2 class="no_details_header">No Details Yet</h2>
-    <p>You have not logged any expenses yet. Please set up your budget first and log your monthly expenses to view this page and track your budget.</p>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 col-md-offset-3 text-center">
+      <h2 class="no_details_header">No Details Yet</h2>
+      <p>You have not logged any expenses yet. Please set up your budget first and log your monthly expenses to view this page and track your budget.</p>
+      </div>
     </div>
   </div>
-</div>
-<% end %>
+  <% end %>
+  <% else %>
+  <!-- if a category is missing a subcategory show below -->
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <h2>Oops!</h2>
+        <p>It looks like you forgot to create a subcategory for one of your categories! Pleas return to the <a href="/subcategories">subcategories</a> page. Your budget setup page will be available once this is fixed!</p>
+      </div>
+    </div>
+  </div>
+  <% end %>
