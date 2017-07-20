@@ -18,6 +18,6 @@ You start by setting up categories and subcategories that you use to track your 
 
 >![photoOfOurApp](app/assets/images/annual_budget.png)
 
-After setting up the yer's budget, you can log your income and expenses on the respective pages. Throughout the month, you can visit the details page to see how well you are sticking to your budget.
+After setting up the year's budget, you can log your income and expenses on the respective pages. Throughout the month, you can visit the details page to see how well you are sticking to your budget.
 
 >![photoOfOurApp](app/assets/images/details.png)
