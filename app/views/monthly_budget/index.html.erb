@@ -7,7 +7,7 @@
         <p>Congrats on setting up your categories & subcategories!</p>
         <p>The next step is to set up your annual budget below. Select an amount to budget per month for each subcategory. If you need to adjust a specific month's budget, you can click into that month and edit each subcategory's budget there. </p>
         <p>If you would like to delete a subcategory's budget, please use the link on the far right in the table. This will delete the budget you created for every month.</p>
-        <p>When you have finished setting up your annual budget, start tracking your <a href="/income?year=<%= @year %>">income</a> and <a href="/expenses?year=<%= @year %>">expenses</a>.</p>
+        <p>When you have finished setting up your annual budget, start tracking your <a href=<%= "/income?year=#{@year}"%> >income</a> and <a href="/expenses?year=<%= @year %>">expenses</a>.</p>
 
         <%= form_for :monthly_budget, url: "/monthly_budget" do |f| %>
           <%= label_tag(:amount, "Amount") %>
