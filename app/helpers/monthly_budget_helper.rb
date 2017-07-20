@@ -1,4 +1,14 @@
 module MonthlyBudgetHelper
+
+  def each_category_has_child(user)
+    user.categories.each do |category|
+      if category.subcategories.empty?
+        return false        
+      end
+    end
+    return true
+  end
+
   def category_totals_by_month(category, year, user)
     jan = category.month_budget_by_category("January", year, user)
     feb = category.month_budget_by_category("February", year, user)
