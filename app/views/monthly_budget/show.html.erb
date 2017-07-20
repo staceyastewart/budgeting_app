@@ -1,10 +1,12 @@
-show
-
 
 <div class="container-fluid">
   <div class="row justify-content-md-center">
-    <div class="col-md-6 col-md-offset-3 ">
+    <div class="col-md-6 col-md-offset-3 text-center">
       <table border="1" class="table">
+        <h2><%= "#{@month}'s Budget" %> </h2>
+        <div id="gapAfterMonth"> </div>
+        <p> Please use the below to edit <%= "#{@month}'s" %> budget. A good use of this page is to edit a budget if their are certain months that will have a different amount for a particular subcategory. To set up the budget for every month, please return to the <a href="/subcategories"> subcategories </a> page. </p>
+        <div id="spaceOnShow"> </div>
         <tr>
           <th>CATEGORY</th>
           <th>Subcategory</th>

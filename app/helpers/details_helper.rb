@@ -1,4 +1,12 @@
 module DetailsHelper
+  def each_category_has_child(user)
+    user.categories.each do |category|
+      if category.subcategories.empty?
+        return false
+      end
+    end
+    return true
+  end
 
   def total_html(total_budget, total_expense)
     if total_budget && total_expense
