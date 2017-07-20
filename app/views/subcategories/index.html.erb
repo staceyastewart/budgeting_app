@@ -1,50 +1,61 @@
-
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-md-6 col-md-offset-3 text-center">
-      <h2>Subcategories</h2>
-      <p>Congrats on setting up your categories! You are now ready to set up your subcategories for each category below. Each category must have at least one subcategory.</p>
-      <p>Some examples of subcategories include: restaurants, groceries, and takeout for a food category; cable bill, electricity bill, rent/mortgage, furniture, and upkeep for a home category; metrocard, uber, taxi, car payment, and parking for a transportation category.</p>
-      <p class="bottom-p">Once you have created at least one subcategory for each category, you can move on to <a href="/monthly_budget?year=2017">budget setup</a>.</p>
-      <%= form_for :subcategories, url: "/subcategories" do |f| %>
-        <%= label_tag(:name, "Create a subcategory:") %><br>
-        <%= text_field_tag :name, nil, placeholder: "Your subcategory", class: "category_input" %> <br>
-        <%= label_tag(:category, "Category:") %><br>
-        <%= f.collection_select :category,  Category.where(:user_id => current_user.id), :id, :title, class: "drop-down-category" %> <br>
-        <%= hidden_field_tag :user_id, @user %>
-        <%= f.submit "Add Subcategory!", class: "btn btn-info btn-xs" %>
-      <% end %>
+<% if user_has_categories(@user_hash) %>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <h2>Subcategories</h2>
+        <p>Congrats on setting up your categories! You are now ready to set up your subcategories for each category below. Each category must have at least one subcategory.</p>
+        <p>Some examples of subcategories include: restaurants, groceries, and takeout for a food category; cable bill, electricity bill, rent/mortgage, furniture, and upkeep for a home category; metrocard, uber, taxi, car payment, and parking for a transportation category.</p>
+        <p class="bottom-p">Once you have created at least one subcategory for each category, you can move on to <a href="/monthly_budget?year=2017">budget setup</a>.</p>
+        <%= form_for :subcategories, url: "/subcategories" do |f| %>
+          <%= label_tag(:name, "Create a subcategory:") %><br>
+          <%= text_field_tag :name, nil, placeholder: "Your subcategory", class: "category_input" %> <br>
+          <%= label_tag(:category, "Category:") %><br>
+          <%= f.collection_select :category,  Category.where(:user_id => current_user.id), :id, :title, class: "drop-down-category" %> <br>
+          <%= hidden_field_tag :user_id, @user %>
+          <%= f.submit "Add Subcategory!", class: "btn btn-info btn-xs" %>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
-<div class="container">
-  <h4 class="text-center subcategory-title">Your categories & subcategories:</h4>
-</div>
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-md-6 col-md-offset-3">
-      <table border="1" class="table category_table">
-        <tr>
-          <th>Category</th>
-          <th>Subcategory</th>
-          <th>Update?</th>
-          <th>Delete?</th>
-        </tr>
-        <% @cats.each do |x| %>
-          <% @subcats.each do |subcategory| %>
-            <% if subcategory[1] == x.id %>
-              <tr>
-                <td><strong><%= x[:title] %></strong></td>
-          <%= form_for :subcategories, url: "/subcategories/#{subcategory[2]}", :method => :put do |f| %>
-            <td><%= text_field_tag :name, subcategory[0] %></td>
-            <td><%= f.submit "Update!", class: "btn btn-success btn-xs" %></td>
-          <% end %>
-            <td><%= link_to 'Delete', Subcategory.find_by_id(subcategory[2]), data: {:confirm => 'Are you sure? Deleting this subcategory will delete all budgets and any expenses related to it.'}, :method => :delete %></td>
-              </tr>
+  <div class="container">
+    <h4 class="text-center subcategory-title">Your categories & subcategories:</h4>
+  </div>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 col-md-offset-3">
+        <table border="1" class="table category_table">
+          <tr>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Update?</th>
+            <th>Delete?</th>
+          </tr>
+          <% @cats.each do |x| %>
+            <% @subcats.each do |subcategory| %>
+              <% if subcategory[1] == x.id %>
+                <tr>
+                  <td><strong><%= x[:title] %></strong></td>
+            <%= form_for :subcategories, url: "/subcategories/#{subcategory[2]}", :method => :put do |f| %>
+              <td><%= text_field_tag :name, subcategory[0] %></td>
+              <td><%= f.submit "Update!", class: "btn btn-success btn-xs" %></td>
+            <% end %>
+              <td><%= link_to 'Delete', Subcategory.find_by_id(subcategory[2]), data: {:confirm => 'Are you sure? Deleting this subcategory will delete all budgets and any expenses related to it.'}, :method => :delete %></td>
+                </tr>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
-      </ol>
+        </ol>
+      </div>
     </div>
   </div>
-</div>
+<% else %>
+  <!-- if there are no categories-->
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <h2>Oops!</h2>
+        <p>It looks like you forgot to create categories! Please return to the <a href="/categories">categories</a> page. Your subcategories page will be available once this is fixed!</p>
+      </div>
+    </div>
+  </div>
+<% end %>
