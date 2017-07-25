@@ -108,10 +108,10 @@ class ExpensesController < ApplicationController
   end
 
   def destroy
-    toDelete = Expense.find_by_id(params[:id])
+    toDelete = expense_to_delete
     return unless toDelete.user_id === current_user.id
     if toDelete.month == "ALL"
-      allToDelete = Expense.where(day: toDelete[:day]).where(description: toDelete[:description]).where(year: toDelete[:year]).where(:user_id => current_user.id)
+      allToDelete = delete_all_month(toDelete)
       allToDelete.destroy_all
       redirect_to :back
     else
@@ -132,6 +132,14 @@ class ExpensesController < ApplicationController
 
     def find_expense(month, year, user)
       Expense.where(:month => month).where(:year => year).where(:user_id => user)
+    end
+
+    def expense_to_delete
+      Expense.find_by_id(params[:id])
+    end
+
+    def delete_all_month(record_to_delete)
+      Expense.where(day: record_to_delete[:day]).where(description: record_to_delete[:description]).where(year: record_to_delete[:year]).where(:user_id => current_user.id)
     end
 
 end
