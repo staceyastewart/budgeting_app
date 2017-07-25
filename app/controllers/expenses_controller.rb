@@ -3,16 +3,16 @@ class ExpensesController < ApplicationController
   def index
     @user = user_id
     @user_hash = set_user
-    @expense = find_expense("ALL", params[:year], set_user)
-    @year = params[:year]
+    @year = find_year
+    @expense = find_expense("ALL", @year, set_user)
     @date = Date.today
     @month = @date.strftime("%B")
   end
 
   def show
     @user = user_id
-    @month =  params[:id]
-    @monthExpense = find_expense(@month, params[:year], set_user)
+    @month =  find_month
+    @monthExpense = find_expense(@month, find_year, set_user)
   end
 
   def create
@@ -77,16 +77,18 @@ class ExpensesController < ApplicationController
   end
 
   def update
-    @expenseToEdit = Expense.find_by_id(params[:id])
-    return unless @expenseToEdit.user_id === current_user.id
+    @expenseToEdit = expense_to_edit
+    return unless @expenseToEdit.user_id === user_id
     if @expenseToEdit.month == "ALL"
-      @allToUpdate = Expense.where(day: @expenseToEdit[:day]).where(description: @expenseToEdit[:description]).where(year: @expenseToEdit[:year]).where(:user_id => current_user.id)
-      p @allToUpdate
-      @allToUpdate.update(
-        description: params[:description],
-        amount: params[:amount],
-        # subcategory: params[:subcategory],
-        day: params[:day])
+      # @allToUpdate = Expense.where(day: @expenseToEdit[:day]).where(description: @expenseToEdit[:description]).where(year: @expenseToEdit[:year]).where(:user_id => current_user.id)
+      @allToUpdate = expenses_to_update(@expenseToEdit)
+      # p @allToUpdate
+      # @allToUpdate.update(
+      #   description: params[:description],
+      #   amount: params[:amount],
+      #   # subcategory: params[:subcategory],
+      #   day: params[:day])
+      @allToUpdate.expense_params
       redirect_to :back
     else
       if params[:expense][:subcategory].blank?
@@ -108,7 +110,7 @@ class ExpensesController < ApplicationController
   end
 
   def destroy
-    toDelete = expense_to_delete
+    toDelete = expense_to_edit
     return unless toDelete.user_id === current_user.id
     if toDelete.month == "ALL"
       allToDelete = delete_all_month(toDelete)
@@ -122,24 +124,44 @@ class ExpensesController < ApplicationController
 
   private
 
-    def set_user
-      User.find_by_id(current_user.id)
-    end
+  def set_user
+    User.find_by_id(current_user.id)
+  end
 
-    def user_id
-      current_user.id
-    end
+  def user_id
+    current_user.id
+  end
 
-    def find_expense(month, year, user)
-      Expense.where(:month => month).where(:year => year).where(:user_id => user)
-    end
+  def find_year
+    params[:year]
+  end
 
-    def expense_to_delete
-      Expense.find_by_id(params[:id])
+  def find_month
+    if params[:month]
+      return params[:month]
+    else
+      return params[:id]
     end
+  end
 
-    def delete_all_month(record_to_delete)
-      Expense.where(day: record_to_delete[:day]).where(description: record_to_delete[:description]).where(year: record_to_delete[:year]).where(:user_id => current_user.id)
-    end
+  def expense_params
+    params.require(:expense).permit(:description, :amount, :day)
+  end
+
+  def find_expense(month, year, user)
+    Expense.where(:month => month).where(:year => year).where(:user_id => user)
+  end
+
+  def expense_to_edit
+    Expense.find_by_id(params[:id])
+  end
+
+  def expenses_to_update(expense)
+    Expense.where(day: expense[:day]).where(description: expense[:description]).where(year: expense[:year]).where(:user_id => current_user.id)
+  end
+
+  def delete_all_month(record_to_delete)
+    Expense.where(day: record_to_delete[:day]).where(description: record_to_delete[:description]).where(year: record_to_delete[:year]).where(:user_id => current_user.id)
+  end
 
 end
