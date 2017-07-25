@@ -3,7 +3,7 @@ class ExpensesController < ApplicationController
   def index
     @user = user_id
     @user_hash = set_user
-    @expense = recurring_expenses
+    @expense = find_expense("ALL", params[:year], set_user)
     @year = params[:year]
     @date = Date.today
     @month = @date.strftime("%B")
@@ -12,7 +12,7 @@ class ExpensesController < ApplicationController
   def show
     @user = user_id
     @month =  params[:id]
-    @monthExpense = current_month_expenses
+    @monthExpense = find_expense(@month, params[:year], set_user)
   end
 
   def create
@@ -130,12 +130,8 @@ class ExpensesController < ApplicationController
       current_user.id
     end
 
-    def recurring_expenses
-      Expense.where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
-    end
-
-    def current_month_expenses
-      Expense.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
+    def find_expense(month, year, user)
+      Expense.where(:month => month).where(:year => year).where(:user_id => user)
     end
 
 end
