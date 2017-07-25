@@ -16,6 +16,7 @@ class ExpensesController < ApplicationController
   end
 
   def create
+    months_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     case params[:month]
       when "January"
         @month_id = 1
@@ -80,30 +81,15 @@ class ExpensesController < ApplicationController
     @expenseToEdit = expense_to_edit
     return unless @expenseToEdit.user_id === user_id
     if @expenseToEdit.month == "ALL"
-      # @allToUpdate = Expense.where(day: @expenseToEdit[:day]).where(description: @expenseToEdit[:description]).where(year: @expenseToEdit[:year]).where(:user_id => current_user.id)
       @allToUpdate = expenses_to_update(@expenseToEdit)
-      # p @allToUpdate
-      # @allToUpdate.update(
-      #   description: params[:description],
-      #   amount: params[:amount],
-      #   # subcategory: params[:subcategory],
-      #   day: params[:day])
-      @allToUpdate.expense_params
+      @allToUpdate.update(expense_params)
       redirect_to :back
     else
       if params[:expense][:subcategory].blank?
-        @expenseToEdit.update(
-          description: params[:description],
-          amount: params[:amount],
-          # subcategory: params[:expense][:subcategory],
-          day: params[:day] )
+        @expenseToEdit.update(expense_params)
         redirect_to :back
       else
-        @expenseToEdit.update(
-          description: params[:description],
-          amount: params[:amount],
-          subcategory: Subcategory.find_by_id(params[:expense][:subcategory]),
-          day: params[:day] )
+        @expenseToEdit.update(expense_params)
         redirect_to :back
       end
     end
@@ -145,7 +131,7 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.require(:expense).permit(:description, :amount, :day)
+    params.permit(:description, :amount, :day)
   end
 
   def find_expense(month, year, user)
