@@ -1,47 +1,47 @@
 class ExpensesController < ApplicationController
 
   def index
-    @user = current_user.id
-    @user_hash = User.find_by_id(current_user.id)
-    @expense = Expense.where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
+    @user = user_id
+    @user_hash = set_user
+    @expense = recurring_expenses
     @year = params[:year]
     @date = Date.today
     @month = @date.strftime("%B")
   end
 
   def show
-    @user = current_user.id
+    @user = user_id
     @month =  params[:id]
-    @monthExpense = Expense.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
+    @monthExpense = current_month_expenses
   end
 
   def create
     case params[:month]
-    when "January"
-      @month_id = 1
-    when "February"
-      @month_id = 2
-    when "March"
-      @month_id = 3
-    when "April"
-      @month_id = 4
-    when "May"
-      @month_id = 5
-    when "June"
-      @month_id = 6
-    when "July"
-      @month_id = 7
-    when "August"
-      @month_id = 8
-    when "September"
-      @month_id = 9
-    when "October"
-      @month_id = 10
-    when "November"
-      @month_id = 11
-    when "December"
-      @month_id = 12
-    when "ALL"
+      when "January"
+        @month_id = 1
+      when "February"
+        @month_id = 2
+      when "March"
+        @month_id = 3
+      when "April"
+        @month_id = 4
+      when "May"
+        @month_id = 5
+      when "June"
+        @month_id = 6
+      when "July"
+        @month_id = 7
+      when "August"
+        @month_id = 8
+      when "September"
+        @month_id = 9
+      when "October"
+        @month_id = 10
+      when "November"
+        @month_id = 11
+      when "December"
+        @month_id = 12
+      when "ALL"
     end
 
     if (params["month"] == "ALL")
@@ -81,10 +81,10 @@ class ExpensesController < ApplicationController
     # p @expenseToEdit.month.class
     p params
     p @expenseToEdit
-    return unless @expenseToEdit.user_id === current_user.id
+    return unless @expenseToEdit.user_id === user_id
     if @expenseToEdit.month == "ALL"
       # puts "YES ALL OF THEM"
-      @allToUpdate = Expense.where(day: @expenseToEdit[:day]).where(description: @expenseToEdit[:description]).where(year: @expenseToEdit[:year]).where(:user_id => current_user.id)
+      @allToUpdate = Expense.where(day: @expenseToEdit[:day]).where(description: @expenseToEdit[:description]).where(year: @expenseToEdit[:year]).where(:user_id => user_id)
       p @allToUpdate
       @allToUpdate.update(
         description: params[:description],
@@ -114,9 +114,9 @@ class ExpensesController < ApplicationController
 
   def destroy
     toDelete = Expense.find_by_id(params[:id])
-    return unless toDelete.user_id === current_user.id
+    return unless toDelete.user_id === user_id
     if toDelete.month == "ALL"
-      allToDelete = Expense.where(day: toDelete[:day]).where(description: toDelete[:description]).where(year: toDelete[:year]).where(:user_id => current_user.id)
+      allToDelete = Expense.where(day: toDelete[:day]).where(description: toDelete[:description]).where(year: toDelete[:year]).where(:user_id => user_id)
       allToDelete.destroy_all
       redirect_to :back
     else
@@ -124,4 +124,23 @@ class ExpensesController < ApplicationController
       redirect_to :back
     end
   end
+
+  private
+
+    def set_user
+      User.find_by_id(user_id)
+    end
+
+    def user_id
+      user_id
+    end
+
+    def recurring_expenses
+      Expense.where(:month => "ALL").where(:year => params[:year]).where(:user_id => user_id)
+    end
+
+    def current_month_expenses
+      Expense.where(:month => @month).where(:year => params[:year]).where(:user_id => user_id)
+    end
+
 end
