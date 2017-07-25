@@ -13,6 +13,7 @@ class ExpensesController < ApplicationController
     @user = user_id
     @month =  find_month
     @monthExpense = find_expense(@month, find_year, set_user)
+    @subcategories = subcategories_arr
   end
 
   def create
@@ -78,18 +79,25 @@ class ExpensesController < ApplicationController
   end
 
   def update
-    @expenseToEdit = expense_to_edit
-    return unless @expenseToEdit.user_id === user_id
-    if @expenseToEdit.month == "ALL"
-      @allToUpdate = expenses_to_update(@expenseToEdit)
-      @allToUpdate.update(expense_params)
+    expenseToEdit = expense_to_edit
+    return unless expenseToEdit.user_id === user_id
+    if expenseToEdit.month == "ALL"
+      allToUpdate = expenses_to_update(expenseToEdit)
+      allToUpdate.update(expense_params)
       redirect_to :back
     else
+      puts params
       if params[:expense][:subcategory].blank?
-        @expenseToEdit.update(expense_params)
+        expenseToEdit.update(expense_params)
         redirect_to :back
       else
-        @expenseToEdit.update(expense_params)
+        expenseToEdit.update(
+          description: params[:description],
+          amount: params[:amount],
+          subcategory: Subcategory.find_by_id(params[:expense][:subcategory]),
+          day: params[:day])
+        # need to figure out how to update subcategory using strong params, below does not work
+        # expenseToEdit.update(expense_params)
         redirect_to :back
       end
     end
@@ -118,6 +126,10 @@ class ExpensesController < ApplicationController
     current_user.id
   end
 
+  def subcategories_arr
+    Subcategory.where(:user_id => current_user.id)
+  end
+
   def find_year
     params[:year]
   end
@@ -131,7 +143,8 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.permit(:description, :amount, :day)
+    # subcat = Subcategory.find_by_id([:expense][:subcategory])
+    params.permit(:description, :amount, :day, :subcategory)
   end
 
   def find_expense(month, year, user)
@@ -140,6 +153,10 @@ class ExpensesController < ApplicationController
 
   def expense_to_edit
     Expense.find_by_id(params[:id])
+  end
+
+  def updated_subcategory
+    Subcategory.find_by_id(params[:expense][:subcategory])
   end
 
   def expenses_to_update(expense)
