@@ -78,13 +78,9 @@ class ExpensesController < ApplicationController
 
   def update
     @expenseToEdit = Expense.find_by_id(params[:id])
-    # p @expenseToEdit.month.class
-    p params
-    p @expenseToEdit
-    return unless @expenseToEdit.user_id === user_id
+    return unless @expenseToEdit.user_id === current_user.id
     if @expenseToEdit.month == "ALL"
-      # puts "YES ALL OF THEM"
-      @allToUpdate = Expense.where(day: @expenseToEdit[:day]).where(description: @expenseToEdit[:description]).where(year: @expenseToEdit[:year]).where(:user_id => user_id)
+      @allToUpdate = Expense.where(day: @expenseToEdit[:day]).where(description: @expenseToEdit[:description]).where(year: @expenseToEdit[:year]).where(:user_id => current_user.id)
       p @allToUpdate
       @allToUpdate.update(
         description: params[:description],
@@ -94,7 +90,6 @@ class ExpensesController < ApplicationController
       redirect_to :back
     else
       if params[:expense][:subcategory].blank?
-        # puts "NO NOT HITTING"
         @expenseToEdit.update(
           description: params[:description],
           amount: params[:amount],
@@ -114,9 +109,9 @@ class ExpensesController < ApplicationController
 
   def destroy
     toDelete = Expense.find_by_id(params[:id])
-    return unless toDelete.user_id === user_id
+    return unless toDelete.user_id === current_user.id
     if toDelete.month == "ALL"
-      allToDelete = Expense.where(day: toDelete[:day]).where(description: toDelete[:description]).where(year: toDelete[:year]).where(:user_id => user_id)
+      allToDelete = Expense.where(day: toDelete[:day]).where(description: toDelete[:description]).where(year: toDelete[:year]).where(:user_id => current_user.id)
       allToDelete.destroy_all
       redirect_to :back
     else
@@ -128,19 +123,19 @@ class ExpensesController < ApplicationController
   private
 
     def set_user
-      User.find_by_id(user_id)
+      User.find_by_id(current_user.id)
     end
 
     def user_id
-      user_id
+      current_user.id
     end
 
     def recurring_expenses
-      Expense.where(:month => "ALL").where(:year => params[:year]).where(:user_id => user_id)
+      Expense.where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
     end
 
     def current_month_expenses
-      Expense.where(:month => @month).where(:year => params[:year]).where(:user_id => user_id)
+      Expense.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
     end
 
 end
