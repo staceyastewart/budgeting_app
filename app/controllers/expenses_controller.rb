@@ -18,33 +18,33 @@ class ExpensesController < ApplicationController
 
   def create
     months_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    case params[:month]
-      when "January"
-        @month_id = 1
-      when "February"
-        @month_id = 2
-      when "March"
-        @month_id = 3
-      when "April"
-        @month_id = 4
-      when "May"
-        @month_id = 5
-      when "June"
-        @month_id = 6
-      when "July"
-        @month_id = 7
-      when "August"
-        @month_id = 8
-      when "September"
-        @month_id = 9
-      when "October"
-        @month_id = 10
-      when "November"
-        @month_id = 11
-      when "December"
-        @month_id = 12
-      when "ALL"
-    end
+    # case params[:month]
+    #   when "January"
+    #     @month_id = 1
+    #   when "February"
+    #     @month_id = 2
+    #   when "March"
+    #     @month_id = 3
+    #   when "April"
+    #     @month_id = 4
+    #   when "May"
+    #     @month_id = 5
+    #   when "June"
+    #     @month_id = 6
+    #   when "July"
+    #     @month_id = 7
+    #   when "August"
+    #     @month_id = 8
+    #   when "September"
+    #     @month_id = 9
+    #   when "October"
+    #     @month_id = 10
+    #   when "November"
+    #     @month_id = 11
+    #   when "December"
+    #     @month_id = 12
+    #   when "ALL"
+    # end
 
     if (params["month"] == "ALL")
       Expense.create(
@@ -70,7 +70,7 @@ class ExpensesController < ApplicationController
         amount: params[:amount],
         day: params[:expense][:day],
         month: params[:month],
-        month_num: @month_id,
+        month_num: months_array.index(params[:month]),
         year: params[:year],
         user_id: params[:user_id],
         subcategory_id: params[:expense][:subcategory] )
@@ -96,7 +96,7 @@ class ExpensesController < ApplicationController
           amount: params[:amount],
           subcategory: Subcategory.find_by_id(params[:expense][:subcategory]),
           day: params[:day])
-        # need to figure out how to update subcategory using strong params, below does not work
+        # need to figure out how to refactor to update subcategory using strong params, below does not work
         # expenseToEdit.update(expense_params)
         redirect_to :back
       end
