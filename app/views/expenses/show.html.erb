@@ -10,7 +10,7 @@
         <%= label_tag(:amount, "Amount") %>
         <%= text_field_tag :amount %> <br>
         <%= label_tag(:subcategory, "Subcategory") %>
-        <%= f.collection_select :subcategory,  Subcategory.where(:user_id => current_user.id), :id, :name %><br>
+        <%= f.collection_select :subcategory,  @subcategories, :id, :name %><br>
         <%= label_tag(:day, "Day") %>
         <%= f.select :day, (1..31) %>
 
