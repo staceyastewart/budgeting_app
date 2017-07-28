@@ -2,15 +2,13 @@ class SubcategoriesController < ApplicationController
 
   def index
     @user = current_user.id
-    @user_hash = User.find_by_id(current_user.id)
-    @cats = Category.where(:user_id => current_user.id)
-    @subcats = Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
+    @user_hash = set_user
+    @cats = find_categories
+    @subcats = find_all_subcategories
   end
 
   def create
-    puts params[:subcategories][:category].to_i.class
-    @cat = params[:subcategories][:category].to_i
-    puts params[:user_id].class
+    # refactor when I figure out nested strong params
     Subcategory.create(
       name: params[:name],
       category_id: params[:subcategories][:category],
@@ -19,18 +17,39 @@ class SubcategoriesController < ApplicationController
   end
 
   def update
-    @subcategoryToEdit = Subcategory.find_by_id(params[:id])
+    @subcategoryToEdit = find_subcategory_to_edit
     return unless @subcategoryToEdit.user_id === current_user.id
-      @subcategoryToEdit.update(
-        name: params[:name])
+      @subcategoryToEdit.update(subcategory_params)
       redirect_to :back
   end
 
   def destroy
-    toDelete = Subcategory.find_by_id(params[:id])
+    toDelete = find_subcategory_to_edit
     return unless toDelete.user_id === current_user.id
       toDelete.destroy
       redirect_to :back
+  end
+
+  private
+
+  def set_user
+    User.find_by_id(current_user.id)
+  end
+
+  def find_all_subcategories
+    Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
+  end
+
+  def find_subcategory_to_edit
+    Subcategory.find_by_id(params[:id])
+  end
+
+  def subcategory_params
+    params.permit(:name)
+  end
+
+  def find_categories
+    Category.where(:user_id => current_user.id)
   end
 
 end
