@@ -4,7 +4,7 @@ class MonthlyBudgetController < ApplicationController
 
   def index
     @user = current_user.id
-    @user_hash = User.find_by_id(current_user.id)
+    @user_hash = set_user
     @cats = Category.where(:user_id => current_user.id)
     @subcats = Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
     @budgets = MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).order(:month_num)
@@ -16,7 +16,7 @@ class MonthlyBudgetController < ApplicationController
 
   def show
     @user = current_user.id
-    @user_hash = User.find_by_id(current_user.id)
+    @user_hash = set_user
     # @user_id = current_user.id
     month = params[:id]
     @month = params[:id]
@@ -83,6 +83,12 @@ class MonthlyBudgetController < ApplicationController
       budgetToDelete.destroy_all
       redirect_to :back
     end
+  end
+
+  private
+
+  def set_user
+    User.find_by_id(current_user.id)
   end
 
 end
