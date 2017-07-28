@@ -1,7 +1,7 @@
 class ExpensesController < ApplicationController
 
   def index
-    @user = user_id
+    @user = current_user.id
     @user_hash = set_user
     @year = find_year
     @expense = find_expense("ALL", @year, set_user)
@@ -10,7 +10,7 @@ class ExpensesController < ApplicationController
   end
 
   def show
-    @user = user_id
+    @user = current_user.id
     @month =  find_month
     @monthExpense = find_expense(@month, find_year, set_user)
     @subcategories = subcategories_arr
@@ -40,7 +40,7 @@ class ExpensesController < ApplicationController
 
   def update
     expenseToEdit = expense_to_edit
-    return unless expenseToEdit.user_id === user_id
+    return unless expenseToEdit.user_id === current_user.id
     if expenseToEdit.month == "ALL"
       allToUpdate = expenses_to_update(expenseToEdit)
       allToUpdate.update(expense_params)
@@ -80,10 +80,6 @@ class ExpensesController < ApplicationController
 
   def set_user
     User.find_by_id(current_user.id)
-  end
-
-  def user_id
-    current_user.id
   end
 
   def subcategories_arr
