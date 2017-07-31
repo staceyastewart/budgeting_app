@@ -56,8 +56,7 @@ class MonthlyBudgetController < ApplicationController
 
 
   def update
-    @budget = MonthlyBudget.find_by_id(params[:id])
-    # p params
+    @budget = budget_to_update
     return unless @budget.user_id === current_user.id
     @budget.update(budget_params)
     redirect_to :back
@@ -65,11 +64,6 @@ class MonthlyBudgetController < ApplicationController
 
 
   def destroy
-    # puts params
-    # puts params[:id]
-    # p params
-    # puts @month
-    # puts params[:month]
     if params[:month]
       firstDelete = budget_to_delete
       firstDelete.destroy_all
@@ -96,6 +90,10 @@ class MonthlyBudgetController < ApplicationController
 
   def find_all_subcategories
     Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
+  end
+
+  def budget_to_update
+    MonthlyBudget.find_by_id(params[:id])
   end
 
   def budget_to_delete
