@@ -7,7 +7,7 @@ class MonthlyBudgetController < ApplicationController
     @user_hash = set_user
     @cats = find_all_categories
     @subcats = find_all_subcategories
-    @budgets = MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).order(:month_num)
+    @budgets = find_all_budgets
     @year = params[:year]
     # @date = Date.today
     # @month = @date.strftime("%B")
@@ -24,7 +24,7 @@ class MonthlyBudgetController < ApplicationController
     # @subcat = Subcategory.where(:user_id => current_user.id).select("DISTINCT ON (name) *")
     @cats = find_all_categories
     @subcats = find_all_subcategories
-    @budgets = MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).where(:month => params[:id])
+    @budgets = find_month_budget
 
 
     @monthlyBudget = Subcategory
@@ -34,23 +34,14 @@ class MonthlyBudgetController < ApplicationController
 
 
   def create
+    months_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     checkForExistingRecord = MonthlyBudget.where(:subcategory_id =>params[:monthly_budget][:subcategory])
     return unless checkForExistingRecord.blank?
-    MonthlyBudget.create(
-      [
-        {month: "January", month_num: 1, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "February", month_num: 2, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "March", month_num: 3, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "April", month_num: 4, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "May", month_num: 5, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "June", month_num: 6, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "July", month_num: 7, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "August", month_num: 8, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "September", month_num: 9, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "October", month_num: 10, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "November", month_num: 11, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]},
-        {month: "December", month_num: 12, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory]}
-      ])
+    months_array.each do |month|
+      new_month = month
+      new_month_number = months_array.index(new_month) + 1
+      MonthlyBudget.create(month: new_month, month_num: new_month_number, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory])
+    end
     redirect_to :back
   end
 
@@ -82,6 +73,14 @@ class MonthlyBudgetController < ApplicationController
 
   def set_user
     User.find_by_id(current_user.id)
+  end
+
+  def find_all_budgets
+    MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).order(:month_num)
+  end
+
+  def find_month_budget
+    MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).where(:month => params[:id])
   end
 
   def find_all_categories
