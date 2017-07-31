@@ -57,28 +57,27 @@ class MonthlyBudgetController < ApplicationController
 
   def update
     @budget = MonthlyBudget.find_by_id(params[:id])
-    p params
+    # p params
     return unless @budget.user_id === current_user.id
-    @budget.update(
-      amount: params[:amount]
-      )
+    @budget.update(budget_params)
     redirect_to :back
   end
 
 
   def destroy
-    puts params
-    puts params[:id]
-    p params
-    puts @month
-    puts params[:month]
+    # puts params
+    # puts params[:id]
+    # p params
+    # puts @month
+    # puts params[:month]
     if params[:month]
-      firstDelete = MonthlyBudget.where(:id => params[:id])
+      firstDelete = budget_to_delete
       firstDelete.destroy_all
       redirect_to :back
     else
-      firstDelete = MonthlyBudget.where(:id => params[:id])
+      firstDelete = budget_to_delete
       allToDeleteId =  firstDelete.first.subcategory_id
+      # I think below also needs user ID
       budgetToDelete = MonthlyBudget.where(:subcategory_id => allToDeleteId)
       budgetToDelete.destroy_all
       redirect_to :back
@@ -97,6 +96,14 @@ class MonthlyBudgetController < ApplicationController
 
   def find_all_subcategories
     Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
+  end
+
+  def budget_to_delete
+    MonthlyBudget.where(:id => params[:id])
+  end
+
+  def budget_params
+    params.permit(:amount)
   end
 
 end
