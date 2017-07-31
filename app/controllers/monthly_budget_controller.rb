@@ -5,8 +5,8 @@ class MonthlyBudgetController < ApplicationController
   def index
     @user = current_user.id
     @user_hash = set_user
-    @cats = Category.where(:user_id => current_user.id)
-    @subcats = Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
+    @cats = find_all_categories
+    @subcats = find_all_subcategories
     @budgets = MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).order(:month_num)
     @year = params[:year]
     # @date = Date.today
@@ -22,8 +22,8 @@ class MonthlyBudgetController < ApplicationController
     @month = params[:id]
     @year = Time.now.year
     # @subcat = Subcategory.where(:user_id => current_user.id).select("DISTINCT ON (name) *")
-    @cats = Category.where(:user_id => current_user.id)
-    @subcats = Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
+    @cats = find_all_categories
+    @subcats = find_all_subcategories
     @budgets = MonthlyBudget.where(:user_id => current_user.id).where(:year => params[:year]).where(:month => params[:id])
 
 
@@ -89,6 +89,14 @@ class MonthlyBudgetController < ApplicationController
 
   def set_user
     User.find_by_id(current_user.id)
+  end
+
+  def find_all_categories
+    Category.where(:user_id => current_user.id)
+  end
+
+  def find_all_subcategories
+    Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
   end
 
 end
