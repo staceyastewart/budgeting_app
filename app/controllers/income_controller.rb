@@ -1,5 +1,6 @@
 class IncomeController < ApplicationController
-  # before_filter :authenticate_user!
+
+  before_filter :authenticate_user!
 
   def index
     @user_id = current_user.id
@@ -14,24 +15,8 @@ class IncomeController < ApplicationController
   end
 
   def create
-    months_array = ["ALL", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    if (params["month"] == "ALL")
-      months_array.each do |month|
-        new_month = month
-        Income.create(description: params[:description], amount: params[:amount], day: params[:day], month: new_month, month_num: months_array.index(new_month), year: params[:year], user_id: params[:user_id], isrecurring: true)
-      end
-      redirect_to :back
-    else
-      Income.create(
-        description: params[:description],
-        amount: params[:amount],
-        day: params[:day],
-        month: params[:month],
-        month_num: @month_id,
-        year: params[:year],
-        user_id: params[:user_id] )
-      redirect_to :back
-    end
+    create_income
+    redirect_to :back
   end
 
   def update
@@ -55,10 +40,7 @@ class IncomeController < ApplicationController
 
 
   def destroy
-    puts "WHAT"
-    # incomeToDelete = Income.where(:description => params[:description])
     incomeToDelete = Income.where(id: params[:id]).where(user_id: current_user.id)
-    p incomeToDelete.first
     return unless incomeToDelete.first.user_id === current_user.id
     if incomeToDelete.first.month == "ALL"
       allToDelete = Income.where(day: incomeToDelete.first[:day]).where(description: incomeToDelete.first[:description]).where(year: incomeToDelete.first[:year]).where(:user_id => current_user.id)
@@ -86,6 +68,25 @@ class IncomeController < ApplicationController
 
   def find_month_incomes
     Income.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
+  end
+
+  def create_income
+    months_array = ["ALL", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    if (params["month"] == "ALL")
+      months_array.each do |month|
+        new_month = month
+        Income.create(description: params[:description], amount: params[:amount], day: params[:day], month: new_month, month_num: months_array.index(new_month), year: params[:year], user_id: params[:user_id], isrecurring: true)
+      end
+    else
+      Income.create(
+        description: params[:description],
+        amount: params[:amount],
+        day: params[:day],
+        month: params[:month],
+        month_num: @month_id,
+        year: params[:year],
+        user_id: params[:user_id] )
+    end
   end
 
 
