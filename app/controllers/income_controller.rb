@@ -31,18 +31,16 @@ class IncomeController < ApplicationController
     redirect_to :back
   end
 
-
   def destroy
-    incomeToDelete = Income.where(id: params[:id]).where(user_id: current_user.id)
+    incomeToDelete = income_to_delete
     return unless incomeToDelete.first.user_id === current_user.id
     if incomeToDelete.first.month == "ALL"
-      allToDelete = Income.where(day: incomeToDelete.first[:day]).where(description: incomeToDelete.first[:description]).where(year: incomeToDelete.first[:year]).where(:user_id => current_user.id)
+      allToDelete = recurring_incomes_to_delete
       allToDelete.destroy_all
-      redirect_to :back
     else
       incomeToDelete.destroy_all
-      redirect_to :back
     end
+    redirect_to :back
   end
 
   private
@@ -71,8 +69,16 @@ class IncomeController < ApplicationController
     Income.find_by_id(params[:id])
   end
 
+  def income_to_delete
+    Income.where(id: params[:id]).where(user_id: current_user.id)
+  end
+
   def recurring_incomes_to_edit
     Income.where(day: @incomeToEdit[:day]).where(description: @incomeToEdit[:description]).where(year: @incomeToEdit[:year]).where(:user_id => current_user.id)
+  end
+
+  def recurring_incomes_to_delete
+    Income.where(day: incomeToDelete.first[:day]).where(description: incomeToDelete.first[:description]).where(year: incomeToDelete.first[:year]).where(:user_id => current_user.id)
   end
 
   def create_income
