@@ -11,7 +11,6 @@ class MonthlyBudgetController < ApplicationController
     @year = set_year
   end
 
-
   def show
     @user = current_user.id
     @user_hash = set_user
@@ -22,19 +21,10 @@ class MonthlyBudgetController < ApplicationController
     @budgets = find_month_budget
   end
 
-
   def create
-    months_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    checkForExistingRecord = MonthlyBudget.where(:subcategory_id =>params[:monthly_budget][:subcategory])
-    return unless checkForExistingRecord.blank?
-    months_array.each do |month|
-      new_month = month
-      new_month_number = months_array.index(new_month) + 1
-      MonthlyBudget.create(month: new_month, month_num: new_month_number, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory])
-    end
+    create_budgets
     redirect_to :back
   end
-
 
   def update
     @budget = budget_to_update
@@ -43,20 +33,9 @@ class MonthlyBudgetController < ApplicationController
     redirect_to :back
   end
 
-
   def destroy
-    if params[:month]
-      firstDelete = budget_to_delete
-      firstDelete.destroy_all
-      redirect_to :back
-    else
-      firstDelete = budget_to_delete
-      allToDeleteId =  firstDelete.first.subcategory_id
-      # I think below also needs user ID
-      budgetToDelete = MonthlyBudget.where(:subcategory_id => allToDeleteId)
-      budgetToDelete.destroy_all
-      redirect_to :back
-    end
+    delete_budget
+    redirect_to :back
   end
 
   private
@@ -99,6 +78,33 @@ class MonthlyBudgetController < ApplicationController
 
   def budget_params
     params.permit(:amount)
+  end
+
+  def checkForExistingRecord
+    MonthlyBudget.where(:subcategory_id =>params[:monthly_budget][:subcategory])
+  end
+
+  def create_budgets
+    months_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    return unless checkForExistingRecord.blank?
+    months_array.each do |month|
+      new_month = month
+      new_month_number = months_array.index(new_month) + 1
+      MonthlyBudget.create(month: new_month, month_num: new_month_number, year: params[:year], amount: params[:amount], user_id: params[:user_id], subcategory_id: params[:monthly_budget][:subcategory])
+    end
+  end
+
+  def delete_budget
+    if params[:month]
+      firstDelete = budget_to_delete
+      firstDelete.destroy_all
+    else
+      firstDelete = budget_to_delete
+      allToDeleteId =  firstDelete.first.subcategory_id
+      # I think below also needs user ID
+      budgetToDelete = MonthlyBudget.where(:subcategory_id => allToDeleteId)
+      budgetToDelete.destroy_all
+    end
   end
 
 end
