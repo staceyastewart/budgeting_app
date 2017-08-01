@@ -3,16 +3,14 @@ class IncomeController < ApplicationController
 
   def index
     @user_id = current_user.id
-    # @recurring = Income.where(:isrecurring => true)
-    @recurring = Income.where(:isrecurring => true).where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
-    @year = params[:year]
+    @recurring = find_recurring_incomes
+    @year = set_year
   end
 
   def show
     @user_id = current_user.id
-    @month =  params[:id]
-    @monthIncome = Income.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
-    puts @monthIncome
+    @month =  set_month
+    @monthIncome = find_month_incomes
   end
 
   def create
@@ -70,6 +68,24 @@ class IncomeController < ApplicationController
       incomeToDelete.destroy_all
       redirect_to :back
     end
+  end
+
+  private
+
+  def set_year
+    params[:year]
+  end
+
+  def set_month
+    params[:id]
+  end
+
+  def find_recurring_incomes
+    Income.where(:isrecurring => true).where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
+  end
+
+  def find_month_incomes
+    Income.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
   end
 
 
