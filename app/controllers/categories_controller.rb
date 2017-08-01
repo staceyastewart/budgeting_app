@@ -2,11 +2,10 @@ class CategoriesController < ApplicationController
   def index
     @user = current_user.id
     @categories = find_all_categories
-
   end
 
   def create
-    return unless current_user.id.to_s == params[:user_id]
+    return unless current_user.id.to_s == find_user
     Category.create(category_params)
     redirect_to :back
   end
@@ -26,6 +25,10 @@ class CategoriesController < ApplicationController
   end
 
   private
+
+  def find_user
+    params[:user_id]
+  end
 
   def category_params
     params.permit(:title, :user_id)

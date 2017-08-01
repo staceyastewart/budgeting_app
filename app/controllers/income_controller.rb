@@ -1,66 +1,93 @@
 class IncomeController < ApplicationController
-  # before_filter :authenticate_user!
+
+  before_filter :authenticate_user!
 
   def index
     @user_id = current_user.id
-    # @recurring = Income.where(:isrecurring => true)
-    @recurring = Income.where(:isrecurring => true).where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
-    @year = params[:year]
+    @recurring = find_recurring_incomes
+    @year = set_year
   end
 
   def show
     @user_id = current_user.id
-    @month =  params[:id]
-    @monthIncome = Income.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
-    puts @monthIncome
+    @month =  set_month
+    @monthIncome = find_month_incomes
   end
 
   def create
-    case params[:month]
-    when "January"
-      @month_id = 1
-    when "February"
-      @month_id = 2
-    when "March"
-      @month_id = 3
-    when "April"
-      @month_id = 4
-    when "May"
-      @month_id = 5
-    when "June"
-      @month_id = 6
-    when "July"
-      @month_id = 7
-    when "August"
-      @month_id = 8
-    when "September"
-      @month_id = 9
-    when "October"
-      @month_id = 10
-    when "November"
-      @month_id = 11
-    when "December"
-      @month_id = 12
-    when "ALL"
+    create_income
+    redirect_to :back
+  end
+
+  def update
+    @incomeToEdit = income_to_edit
+    return unless @incomeToEdit.user_id === current_user.id
+    if @incomeToEdit.month == "ALL"
+      allToEdit = recurring_incomes_to_edit
+      allToEdit.update(income_params)
+    else
+      @incomeToEdit.update(income_params)
     end
+    redirect_to :back
+  end
+
+  def destroy
+    incomeToDelete = income_to_delete
+    return unless incomeToDelete.first.user_id === current_user.id
+    if incomeToDelete.first.month == "ALL"
+      allToDelete = recurring_incomes_to_delete(incomeToDelete)
+      allToDelete.destroy_all
+    else
+      incomeToDelete.destroy_all
+    end
+    redirect_to :back
+  end
+
+  private
+
+  def set_year
+    params[:year]
+  end
+
+  def set_month
+    params[:id]
+  end
+
+  def find_recurring_incomes
+    Income.where(:isrecurring => true).where(:month => "ALL").where(:year => params[:year]).where(:user_id => current_user.id)
+  end
+
+  def find_month_incomes
+    Income.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
+  end
+
+  def income_params
+    params.permit(:description, :amount, :day)
+  end
+
+  def income_to_edit
+    Income.find_by_id(params[:id])
+  end
+
+  def income_to_delete
+    Income.where(id: params[:id]).where(user_id: current_user.id)
+  end
+
+  def recurring_incomes_to_edit
+    Income.where(day: @incomeToEdit[:day]).where(description: @incomeToEdit[:description]).where(year: @incomeToEdit[:year]).where(:user_id => current_user.id)
+  end
+
+  def recurring_incomes_to_delete(to_delete)
+    Income.where(day: to_delete.first[:day]).where(description: to_delete.first[:description]).where(year: to_delete.first[:year]).where(:user_id => current_user.id)
+  end
+
+  def create_income
+    months_array = ["ALL", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     if (params["month"] == "ALL")
-      Income.create(
-        [
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "January", month_num: 1, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "February", month_num: 2, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "March", month_num: 3, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "April", month_num: 4, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "May", month_num: 5, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "June", month_num: 6, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "July", month_num: 7, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "August", month_num: 8, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "September", month_num: 9, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "October", month_num: 10, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "November", month_num: 11, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "December", month_num: 12, year: params[:year], user_id: params[:user_id], isrecurring: true },
-          { description: params[:description], amount: params[:amount], day: params[:day], month: "ALL", month_num: 0, year: params[:year], user_id: params[:user_id], isrecurring: true },
-        ])
-      redirect_to :back
+      months_array.each do |month|
+        new_month = month
+        Income.create(description: params[:description], amount: params[:amount], day: params[:day], month: new_month, month_num: months_array.index(new_month), year: params[:year], user_id: params[:user_id], isrecurring: true)
+      end
     else
       Income.create(
         description: params[:description],
@@ -70,43 +97,6 @@ class IncomeController < ApplicationController
         month_num: @month_id,
         year: params[:year],
         user_id: params[:user_id] )
-      redirect_to :back
-    end
-  end
-
-  def update
-    @incomeToEdit = Income.find_by_id(params[:id])
-    return unless @incomeToEdit.user_id === current_user.id
-    if @incomeToEdit.month == "ALL"
-      allToEdit = Income.where(day: @incomeToEdit[:day]).where(description: @incomeToEdit[:description]).where(year: @incomeToEdit[:year]).where(:user_id => current_user.id)
-      allToEdit.update(
-        description: params[:description],
-        amount: params[:amount],
-        day: params[:day])
-      redirect_to :back
-    else
-      @incomeToEdit.update(
-        description: params[:description],
-        amount: params[:amount],
-        day: params[:day])
-      redirect_to :back
-    end
-  end
-
-
-  def destroy
-    puts "WHAT"
-    # incomeToDelete = Income.where(:description => params[:description])
-    incomeToDelete = Income.where(id: params[:id]).where(user_id: current_user.id)
-    p incomeToDelete.first
-    return unless incomeToDelete.first.user_id === current_user.id
-    if incomeToDelete.first.month == "ALL"
-      allToDelete = Income.where(day: incomeToDelete.first[:day]).where(description: incomeToDelete.first[:description]).where(year: incomeToDelete.first[:year]).where(:user_id => current_user.id)
-      allToDelete.destroy_all
-      redirect_to :back
-    else
-      incomeToDelete.destroy_all
-      redirect_to :back
     end
   end
 
