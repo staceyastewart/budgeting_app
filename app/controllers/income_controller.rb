@@ -35,7 +35,7 @@ class IncomeController < ApplicationController
     incomeToDelete = income_to_delete
     return unless incomeToDelete.first.user_id === current_user.id
     if incomeToDelete.first.month == "ALL"
-      allToDelete = recurring_incomes_to_delete
+      allToDelete = recurring_incomes_to_delete(incomeToDelete)
       allToDelete.destroy_all
     else
       incomeToDelete.destroy_all
@@ -77,8 +77,8 @@ class IncomeController < ApplicationController
     Income.where(day: @incomeToEdit[:day]).where(description: @incomeToEdit[:description]).where(year: @incomeToEdit[:year]).where(:user_id => current_user.id)
   end
 
-  def recurring_incomes_to_delete
-    Income.where(day: incomeToDelete.first[:day]).where(description: incomeToDelete.first[:description]).where(year: incomeToDelete.first[:year]).where(:user_id => current_user.id)
+  def recurring_incomes_to_delete(to_delete)
+    Income.where(day: to_delete.first[:day]).where(description: to_delete.first[:description]).where(year: to_delete.first[:year]).where(:user_id => current_user.id)
   end
 
   def create_income
