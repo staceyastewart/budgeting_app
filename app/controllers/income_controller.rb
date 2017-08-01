@@ -20,22 +20,15 @@ class IncomeController < ApplicationController
   end
 
   def update
-    @incomeToEdit = Income.find_by_id(params[:id])
+    @incomeToEdit = income_to_edit
     return unless @incomeToEdit.user_id === current_user.id
     if @incomeToEdit.month == "ALL"
-      allToEdit = Income.where(day: @incomeToEdit[:day]).where(description: @incomeToEdit[:description]).where(year: @incomeToEdit[:year]).where(:user_id => current_user.id)
-      allToEdit.update(
-        description: params[:description],
-        amount: params[:amount],
-        day: params[:day])
-      redirect_to :back
+      allToEdit = recurring_incomes_to_edit
+      allToEdit.update(income_params)
     else
-      @incomeToEdit.update(
-        description: params[:description],
-        amount: params[:amount],
-        day: params[:day])
-      redirect_to :back
+      @incomeToEdit.update(income_params)
     end
+    redirect_to :back
   end
 
 
@@ -68,6 +61,18 @@ class IncomeController < ApplicationController
 
   def find_month_incomes
     Income.where(:month => @month).where(:year => params[:year]).where(:user_id => current_user.id)
+  end
+
+  def income_params
+    params.permit(:description, :amount, :day)
+  end
+
+  def income_to_edit
+    Income.find_by_id(params[:id])
+  end
+
+  def recurring_incomes_to_edit
+    Income.where(day: @incomeToEdit[:day]).where(description: @incomeToEdit[:description]).where(year: @incomeToEdit[:year]).where(:user_id => current_user.id)
   end
 
   def create_income
