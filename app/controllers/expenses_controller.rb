@@ -1,5 +1,4 @@
 class ExpensesController < ApplicationController
-  require "pry"
 
   def index
     @user = current_user.id
