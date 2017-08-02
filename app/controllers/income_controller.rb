@@ -82,11 +82,20 @@ class IncomeController < ApplicationController
   end
 
   def create_income
+    # params[:description] = "HELLO THIS IS A TEST"
     months_array = ["ALL", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     if (params["month"] == "ALL")
       months_array.each do |month|
         new_month = month
-        Income.create(description: params[:description], amount: params[:amount], day: params[:day], month: new_month, month_num: months_array.index(new_month), year: params[:year], user_id: params[:user_id], isrecurring: true)
+        Income.create(
+          description: params[:description],
+          amount: params[:amount],
+          day: params[:day],
+          month: new_month,
+          month_num: months_array.index(new_month),
+          year: params[:year],
+          user_id: params[:user_id],
+          isrecurring: true)
       end
     else
       Income.create(
@@ -96,7 +105,7 @@ class IncomeController < ApplicationController
         month: params[:month],
         month_num: @month_id,
         year: params[:year],
-        user_id: params[:user_id] )
+        user_id: params[:user_id])
     end
   end
 
