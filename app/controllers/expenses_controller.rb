@@ -1,8 +1,6 @@
 class ExpensesController < ApplicationController
   require "pry"
 
-  before_action :expense, only: [:update, :delete]
-
   def index
     @user = current_user.id
     @user_hash = set_user
@@ -70,10 +68,6 @@ class ExpensesController < ApplicationController
   end
 
   private
-
-  def expense
-    @expense = Expense.find(params[:id])
-  end
 
   def set_user
     User.find_by_id(current_user.id)
