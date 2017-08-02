@@ -1,4 +1,7 @@
 class ExpensesController < ApplicationController
+  require "pry"
+
+  before_action :expense, only: [:update, :delete]
 
   def index
     @user = current_user.id
@@ -46,36 +49,10 @@ class ExpensesController < ApplicationController
     end
   end
 
-  # def update
-  #   expenseToEdit = expense_to_edit
-  #   return unless expenseToEdit.user_id === current_user.id
-  #   if expenseToEdit.month == "ALL"
-  #     allToUpdate = expenses_to_update(expenseToEdit)
-  #     allToUpdate.update(expense_params)
-  #     redirect_to :back
-  #   else
-  #     puts params
-  #     if params[:expense][:subcategory].blank?
-  #       expenseToEdit.update(expense_params)
-  #       redirect_to :back
-  #     else
-  #       expenseToEdit.update(
-  #         description: params[:description],
-  #         amount: params[:amount],
-  #         subcategory: Subcategory.find_by_id(params[:expense][:subcategory]),
-  #         day: params[:day])
-  #       # need to figure out how to refactor to update subcategory using strong params, below does not work
-  #       # expenseToEdit.update(expense_params)
-  #       redirect_to :back
-  #     end
-  #   end
-  # end
-
   def update
-    # this update method is not updating the subcategory if it is changed
     expenseToEdit = expense_to_edit
     return unless expenseToEdit.user_id === current_user.id
-    expense_to_edit.update_expense(expense_params, expenseToEdit, current_user.id)
+    expense_to_edit.update_expense(expense_params, expense_update_params, expenseToEdit, current_user.id)
       redirect_to :back
   end
 
@@ -93,6 +70,10 @@ class ExpensesController < ApplicationController
   end
 
   private
+
+  def expense
+    @expense = Expense.find(params[:id])
+  end
 
   def set_user
     User.find_by_id(current_user.id)
@@ -115,7 +96,11 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.permit(:description, :amount, :day, :expense, :subcategory_id)
+    params.permit(:description, :amount, :day)
+  end
+
+  def expense_update_params
+    params.require(:expense).permit(:subcategory_id)
   end
 
   def find_expense(month, year, user)
@@ -129,10 +114,6 @@ class ExpensesController < ApplicationController
   def updated_subcategory
     Subcategory.find_by_id(params[:expense][:subcategory])
   end
-
-  # def expenses_to_update(expense)
-  #   Expense.where(day: expense[:day]).where(description: expense[:description]).where(year: expense[:year]).where(:user_id => current_user.id)
-  # end
 
   def delete_all_month(record_to_delete)
     Expense.where(day: record_to_delete[:day]).where(description: record_to_delete[:description]).where(year: record_to_delete[:year]).where(:user_id => current_user.id)

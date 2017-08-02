@@ -2,12 +2,14 @@ class Expense < ApplicationRecord
   belongs_to :user
   belongs_to :subcategory
 
-  def update_expense(expense_params, expenseToEdit, user)
+  def update_expense(expense_params, update_params, expenseToEdit, user)
     if expenseToEdit.month == "ALL"
       allToUpdate = expenses_to_update(expenseToEdit, user)
       allToUpdate.update(expense_params)
+      allToUpdate.update(update_params)
     else
       expenseToEdit.update(expense_params)
+      expenseToEdit.update(update_params)
     end
   end
 
