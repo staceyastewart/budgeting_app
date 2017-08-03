@@ -18,7 +18,7 @@ class IncomeController < ApplicationController
     create_income
     redirect_to :back
   end
-
+ 
   def update
     @incomeToEdit = income_to_edit
     return unless @incomeToEdit.user_id === current_user.id
