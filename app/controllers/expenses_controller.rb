@@ -47,10 +47,18 @@ class ExpensesController < ApplicationController
   end
 
   def update
-    expenseToEdit = expense_to_edit
-    return unless expenseToEdit.user_id === current_user.id
-    expense_to_edit.update_expense(expense_params, expense_update_params, expenseToEdit, current_user.id)
-      redirect_to :back
+    @expense = Expense.find(params[:id])
+    # binding.pry
+    if @expense.update_attributes(expense_params)
+      flash[:notice] = "SUCCESS"
+    else
+      flash[:alert] = "NOOOOOOOOOOO"
+    end
+    # expenseToEdit = expense_to_edit
+    # return unless expenseToEdit.user_id === current_user.id
+    # expense_to_edit.update_expense(expense_params, expense_update_params, expenseToEdit, current_user.id)
+
+    redirect_to :back
   end
 
   def destroy
@@ -89,11 +97,7 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.permit(:description, :amount, :day)
-  end
-
-  def expense_update_params
-    params.require(:expense).permit(:subcategory_id)
+    params.require(:expense).permit(:description, :amount, :day, :subcategory_id, :month, :year)
   end
 
   def find_expense(month, year, user)

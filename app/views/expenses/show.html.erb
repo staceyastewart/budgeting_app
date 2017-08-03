@@ -1,4 +1,10 @@
 <div class="container">
+  <% if notice %>
+  <p class="alert alert-success"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="alert alert-danger"><%= alert %></p>
+<% end %>
   <div class="row justify-content-md-center">
     <div class="col-md-6 col-md-offset-3 text-center">
       <h2 class="month-title"><%= @month %></h2>
@@ -44,13 +50,13 @@
       <% @monthExpense.each do |expense| %>
         <tr>
           <%= form_for :expense, url: "/expenses/#{expense.id}", :method => :put do |f| %>
-            <% @subcategory = Subcategory.where(:id => expense.subcategory_id).pluck(:name)[0] %>
-            <td><%= text_field_tag :description, expense.description %></td>
-            <td><%= text_field_tag :amount, expense.amount %></td>
-            <td><%= f.collection_select :subcategory_id,  @subcategories, :id, :name, :prompt => "#{@subcategory}" %></td>
-            <td><%= text_field_tag :day, expense.day %></td>
-            <td><%= text_field_tag :month, expense.month, :readonly => true %></td>
-            <td><%= text_field_tag :year, expense.year, :readonly => true %></td>
+            <%# @subcategory = Subcategory.where(:id => expense.subcategory_id) %>
+            <td><%= f.text_field :description, :value => expense.description %></td>
+            <td><%= f.text_field :amount, :value =>  expense.amount %></td>
+            <td><%= f.collection_select :subcategory_id,  @subcategories, :id, :name, {:selected => expense.subcategory.id} %></td>
+            <td><%= f.text_field :day, :value =>  expense.day %></td>
+            <td><%= f.text_field :month, :value =>  expense.month, :readonly => true %></td>
+            <td><%= f.text_field :year, :value =>  expense.year, :readonly => true %></td>
             <td><%= f.submit "Update!", class: "btn btn-info btn-xs" %></td>
           <% end %>
             <td><%= link_to 'Destroy', expense, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
