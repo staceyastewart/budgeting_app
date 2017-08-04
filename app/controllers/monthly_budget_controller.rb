@@ -95,6 +95,7 @@ class MonthlyBudgetController < ApplicationController
   end
 
   def delete_budget
+    return unless budget_to_delete[0].user_id == current_user.id
     if params[:month]
       firstDelete = budget_to_delete
       firstDelete.destroy_all
