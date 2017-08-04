@@ -48,10 +48,12 @@ class ExpensesController < ApplicationController
 
   def update
     @expense = expense_to_edit
-    if @expense.update_attributes(expense_params)
-      flash[:notice] = "SUCCESS"
+    return unless @expense.user_id === current_user.id
+    if @expense.month == "ALL"
+      allToUpdate = expenses_to_update(@expense)
+      allToUpdate.update(expense_params)
     else
-      flash[:alert] = "DID NOT SAVE"
+      @expense.update_attributes(expense_params)
     end
     redirect_back(fallback_location: root_path)
   end
@@ -92,7 +94,7 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.require(:expense).permit(:description, :amount, :day, :subcategory_id, :month, :year)
+    params.require(:expense).permit(:description, :amount, :day, :subcategory_id)
   end
 
   def find_expense(month, year, user)
@@ -101,6 +103,10 @@ class ExpensesController < ApplicationController
 
   def expense_to_edit
     Expense.find_by_id(params[:id])
+  end
+
+  def expenses_to_update(expense)
+    Expense.where(day: expense[:day]).where(description: expense[:description]).where(year: expense[:year]).where(:user_id => current_user.id)
   end
 
   def updated_subcategory
