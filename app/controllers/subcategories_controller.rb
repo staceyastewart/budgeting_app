@@ -9,21 +9,21 @@ class SubcategoriesController < ApplicationController
 
   def create
     Subcategory.create(subcategory_create_params)
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def update
     @subcategoryToEdit = find_subcategory_to_edit
     return unless @subcategoryToEdit.user_id === current_user.id
       @subcategoryToEdit.update(subcategory_params)
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
   end
 
   def destroy
     toDelete = find_subcategory_to_edit
     return unless toDelete.user_id === current_user.id
       toDelete.destroy
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
   end
 
   private
