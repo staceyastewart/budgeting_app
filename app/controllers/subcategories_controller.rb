@@ -8,11 +8,7 @@ class SubcategoriesController < ApplicationController
   end
 
   def create
-    # refactor when I figure out nested strong params
-    Subcategory.create(
-      name: params[:name],
-      category_id: params[:subcategories][:category],
-      user_id: params[:user_id])
+    Subcategory.create(subcategory_create_params)
     redirect_to :back
   end
 
@@ -42,6 +38,10 @@ class SubcategoriesController < ApplicationController
 
   def find_subcategory_to_edit
     Subcategory.find_by_id(params[:id])
+  end
+
+  def subcategory_create_params
+    params.require(:subcategory).permit(:name, :category_id, :user_id)
   end
 
   def subcategory_params
