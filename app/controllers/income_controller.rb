@@ -16,7 +16,7 @@ class IncomeController < ApplicationController
 
   def create
     create_income
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def update
@@ -28,7 +28,7 @@ class IncomeController < ApplicationController
     else
       @incomeToEdit.update(income_params)
     end
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def destroy
@@ -40,7 +40,7 @@ class IncomeController < ApplicationController
     else
       incomeToDelete.destroy_all
     end
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   private
@@ -62,7 +62,7 @@ class IncomeController < ApplicationController
   end
 
   def income_params
-    params.permit(:description, :amount, :day)
+    params.permit(:description, :amount, :day, :month, :month_num, :year, :user_id, :isrecurring)
   end
 
   def income_to_edit
@@ -82,30 +82,18 @@ class IncomeController < ApplicationController
   end
 
   def create_income
-    # params[:description] = "HELLO THIS IS A TEST"
     months_array = ["ALL", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     if (params["month"] == "ALL")
       months_array.each do |month|
         new_month = month
-        Income.create(
-          description: params[:description],
-          amount: params[:amount],
-          day: params[:day],
-          month: new_month,
-          month_num: months_array.index(new_month),
-          year: params[:year],
-          user_id: params[:user_id],
-          isrecurring: true)
+        params[:month] = new_month
+        params[:month_num] = months_array.index(new_month)
+        params[:isrecurring] = true
+        Income.create(income_params)
       end
     else
-      Income.create(
-        description: params[:description],
-        amount: params[:amount],
-        day: params[:day],
-        month: params[:month],
-        month_num: @month_id,
-        year: params[:year],
-        user_id: params[:user_id])
+      params[:month_num] = months_array.index(params[:month])
+      Income.create(income_params)
     end
   end
 

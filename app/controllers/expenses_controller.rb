@@ -31,7 +31,7 @@ class ExpensesController < ApplicationController
           isrecurring: true,
           subcategory_id: params[:expenses][:subcategory])
       end
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     else
       Expense.create(
         description: params[:description],
@@ -42,23 +42,20 @@ class ExpensesController < ApplicationController
         year: params[:year],
         user_id: params[:user_id],
         subcategory_id: params[:expense][:subcategory])
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 
   def update
-    @expense = Expense.find(params[:id])
-    # binding.pry
-    if @expense.update_attributes(expense_params)
-      flash[:notice] = "SUCCESS"
+    @expense = expense_to_edit
+    return unless @expense.user_id === current_user.id
+    if @expense.month == "ALL"
+      allToUpdate = expenses_to_update(@expense)
+      allToUpdate.update(expense_params)
     else
-      flash[:alert] = "NOOOOOOOOOOO"
+      @expense.update_attributes(expense_params)
     end
-    # expenseToEdit = expense_to_edit
-    # return unless expenseToEdit.user_id === current_user.id
-    # expense_to_edit.update_expense(expense_params, expense_update_params, expenseToEdit, current_user.id)
-
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def destroy
@@ -67,10 +64,10 @@ class ExpensesController < ApplicationController
     if toDelete.month == "ALL"
       allToDelete = delete_all_month(toDelete)
       allToDelete.destroy_all
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     else
       toDelete.destroy
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 
@@ -97,7 +94,7 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.require(:expense).permit(:description, :amount, :day, :subcategory_id, :month, :year)
+    params.require(:expense).permit(:description, :amount, :day, :subcategory_id)
   end
 
   def find_expense(month, year, user)
@@ -106,6 +103,10 @@ class ExpensesController < ApplicationController
 
   def expense_to_edit
     Expense.find_by_id(params[:id])
+  end
+
+  def expenses_to_update(expense)
+    Expense.where(day: expense[:day]).where(description: expense[:description]).where(year: expense[:year]).where(:user_id => current_user.id)
   end
 
   def updated_subcategory

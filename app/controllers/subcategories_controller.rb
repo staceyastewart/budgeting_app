@@ -8,26 +8,22 @@ class SubcategoriesController < ApplicationController
   end
 
   def create
-    # refactor when I figure out nested strong params
-    Subcategory.create(
-      name: params[:name],
-      category_id: params[:subcategories][:category],
-      user_id: params[:user_id])
-    redirect_to :back
+    Subcategory.create(subcategory_params)
+    redirect_back(fallback_location: root_path)
   end
 
   def update
     @subcategoryToEdit = find_subcategory_to_edit
     return unless @subcategoryToEdit.user_id === current_user.id
-      @subcategoryToEdit.update(subcategory_params)
-      redirect_to :back
+    @subcategoryToEdit.update(subcategory_params)
+    redirect_back(fallback_location: root_path)
   end
 
   def destroy
     toDelete = find_subcategory_to_edit
     return unless toDelete.user_id === current_user.id
-      toDelete.destroy
-      redirect_to :back
+    toDelete.destroy
+    redirect_back(fallback_location: root_path)
   end
 
   private
@@ -45,7 +41,7 @@ class SubcategoriesController < ApplicationController
   end
 
   def subcategory_params
-    params.permit(:name)
+    params.require(:subcategory).permit(:name, :category_id, :user_id)
   end
 
   def find_categories

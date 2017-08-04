@@ -1,10 +1,4 @@
 <div class="container">
-  <% if notice %>
-  <p class="alert alert-success"><%= notice %></p>
-<% end %>
-<% if alert %>
-  <p class="alert alert-danger"><%= alert %></p>
-<% end %>
   <div class="row justify-content-md-center">
     <div class="col-md-6 col-md-offset-3 text-center">
       <h2 class="month-title"><%= @month %></h2>
@@ -19,7 +13,6 @@
         <%= f.collection_select :subcategory,  @subcategories, :id, :name %><br>
         <%= label_tag(:day, "Day") %>
         <%= f.select :day, (1..31) %>
-
         <%= label_tag(:month, "Month") %>
         <%= text_field_tag :month, params[:id], :readonly => true %>
         <%= label_tag(:year, "Year") %>
@@ -50,7 +43,6 @@
       <% @monthExpense.each do |expense| %>
         <tr>
           <%= form_for :expense, url: "/expenses/#{expense.id}", :method => :put do |f| %>
-            <%# @subcategory = Subcategory.where(:id => expense.subcategory_id) %>
             <td><%= f.text_field :description, :value => expense.description %></td>
             <td><%= f.text_field :amount, :value =>  expense.amount %></td>
             <td><%= f.collection_select :subcategory_id,  @subcategories, :id, :name, {:selected => expense.subcategory.id} %></td>

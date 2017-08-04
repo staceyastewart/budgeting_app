@@ -7,21 +7,21 @@ class CategoriesController < ApplicationController
   def create
     return unless current_user.id.to_s == find_user
     Category.create(category_params)
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def update
     @categoryToEdit = find_category_to_edit
     return unless @categoryToEdit.user_id === current_user.id
       @categoryToEdit.update(category_params)
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
   end
 
   def destroy
     toDelete = find_category_to_edit
     return unless toDelete.user_id === current_user.id
       toDelete.destroy
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
   end
 
   private
