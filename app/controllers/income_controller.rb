@@ -16,7 +16,7 @@ class IncomeController < ApplicationController
 
   def create
     create_income
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def update
@@ -28,7 +28,7 @@ class IncomeController < ApplicationController
     else
       @incomeToEdit.update(income_params)
     end
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def destroy
@@ -40,7 +40,7 @@ class IncomeController < ApplicationController
     else
       incomeToDelete.destroy_all
     end
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   private
