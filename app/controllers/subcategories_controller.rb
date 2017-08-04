@@ -8,7 +8,7 @@ class SubcategoriesController < ApplicationController
   end
 
   def create
-    Subcategory.create(subcategory_create_params)
+    Subcategory.create(subcategory_params)
     redirect_back(fallback_location: root_path)
   end
 
@@ -40,12 +40,8 @@ class SubcategoriesController < ApplicationController
     Subcategory.find_by_id(params[:id])
   end
 
-  def subcategory_create_params
-    params.require(:subcategory).permit(:name, :category_id, :user_id)
-  end
-
   def subcategory_params
-    params.permit(:name)
+    params.require(:subcategory).permit(:name, :category_id, :user_id)
   end
 
   def find_categories

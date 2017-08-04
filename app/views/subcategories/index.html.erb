@@ -35,8 +35,8 @@
               <% if subcategory[1] == x.id %>
                 <tr>
                   <td><strong><%= x[:title] %></strong></td>
-            <%= form_for :subcategories, url: "/subcategories/#{subcategory[2]}", :method => :put do |f| %>
-              <td><%= text_field_tag :name, subcategory[0] %></td>
+            <%= form_for :subcategory, url: "/subcategories/#{subcategory[2]}", :method => :put do |f| %>
+              <td><%= f.text_field :name, :value => subcategory[0] %></td>
               <td><%= f.submit "Update!", class: "btn btn-success btn-xs" %></td>
             <% end %>
               <td><%= link_to 'Delete', Subcategory.find_by_id(subcategory[2]), data: {:confirm => 'Are you sure? Deleting this subcategory will delete all budgets and any expenses related to it.'}, :method => :delete %></td>
