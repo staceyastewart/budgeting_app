@@ -23,19 +23,19 @@ class MonthlyBudgetController < ApplicationController
 
   def create
     create_budgets
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def update
     @budget = budget_to_update
     return unless @budget.user_id === current_user.id
     @budget.update(budget_params)
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def destroy
     delete_budget
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   private
@@ -101,7 +101,6 @@ class MonthlyBudgetController < ApplicationController
     else
       firstDelete = budget_to_delete
       allToDeleteId =  firstDelete.first.subcategory_id
-      # I think below also needs user ID
       budgetToDelete = MonthlyBudget.where(:subcategory_id => allToDeleteId)
       budgetToDelete.destroy_all
     end
