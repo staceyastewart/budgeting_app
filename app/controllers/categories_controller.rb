@@ -1,31 +1,46 @@
 class CategoriesController < ApplicationController
   def index
     @user = current_user.id
-    @categories = Category.where(:user_id => current_user.id)
-
+    @categories = find_all_categories
   end
 
   def create
-    return unless current_user.id.to_s == params[:user_id]
-    Category.create(
-      title: params[:title],
-      user_id: params[:user_id])
-    redirect_to :back
+    return unless current_user.id.to_s == find_user
+    Category.create(category_params)
+    redirect_back(fallback_location: root_path)
   end
 
   def update
-    @categoryToEdit = Category.find_by_id(params[:id])
+    @categoryToEdit = find_category_to_edit
     return unless @categoryToEdit.user_id === current_user.id
-      @categoryToEdit.update(
-        title: params[:title])
-      redirect_to :back
+      @categoryToEdit.update(category_params)
+      redirect_back(fallback_location: root_path)
   end
 
   def destroy
-    toDelete = Category.find_by_id(params[:id])
+    toDelete = find_category_to_edit
     return unless toDelete.user_id === current_user.id
       toDelete.destroy
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
   end
+
+  private
+
+  def find_user
+    params[:user_id]
+  end
+
+  def category_params
+    params.permit(:title, :user_id)
+  end
+
+  def find_all_categories
+    Category.where(:user_id => current_user.id)
+  end
+
+  def find_category_to_edit
+    Category.find_by_id(params[:id])
+  end
+
 
 end

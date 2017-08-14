@@ -7,6 +7,10 @@ end
 
 gem 'chartkick'
 
+gem "pry"
+
+gem "tzinfo-data"
+
 gem "devise"
 
 gem 'tzinfo-data'
