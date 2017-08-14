@@ -98,7 +98,7 @@ class ExpensesController < ApplicationController
   end
 
   def find_expense(month, year, user)
-    Expense.where(:month => month).where(:year => year).where(:user_id => user)
+    Expense.where(:month => month).where(:year => year).where(:user_id => user).order(:day)
   end
 
   def expense_to_edit
