@@ -7,11 +7,11 @@ end
 
 gem 'chartkick'
 
-gem "pry"
+gem 'pry'
 
-gem "tzinfo-data"
+gem 'tzinfo-data'
 
-gem "devise"
+gem 'devise'
 
 gem 'tzinfo-data'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
