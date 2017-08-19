@@ -10,7 +10,7 @@
           <%= label_tag(:name, "Create a subcategory:") %><br>
           <%= f.text_field :name, placeholder: "Your subcategory", class: "category_input" %> <br>
           <%= label_tag(:category, "Category:") %><br>
-          <%= f.collection_select :category_id,  Category.where(:user_id => current_user.id), :id, :title, class: "drop-down-category" %> <br>
+          <%= f.collection_select :category_id,  @categories, :id, :title, class: "drop-down-category" %> <br>
           <%= f.hidden_field :user_id, :value => @user %>
           <%= f.submit "Add Subcategory!", class: "btn btn-info btn-xs subcat-button" %>
         <% end %>
@@ -30,8 +30,8 @@
             <th>Update?</th>
             <th>Delete?</th>
           </tr>
-          <% @cats.each do |x| %>
-            <% @subcats.each do |subcategory| %>
+          <% @categories.each do |x| %>
+            <% @subcategories.each do |subcategory| %>
               <% if subcategory[1] == x.id %>
                 <tr>
                   <td><strong><%= x[:title] %></strong></td>
@@ -49,7 +49,7 @@
     </div>
   </div>
 <% else %>
-  <!-- if there are no categories-->
+  <!-- if there are no categories set up for this user-->
   <div class="container">
     <div class="row justify-content-md-center">
       <div class="col-md-6 col-md-offset-3 text-center">

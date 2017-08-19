@@ -3,8 +3,8 @@ class SubcategoriesController < ApplicationController
   def index
     @user = current_user.id
     @user_hash = set_user
-    @cats = find_categories
-    @subcats = find_all_subcategories
+    @categories = find_categories
+    @subcategories = find_all_subcategories
   end
 
   def create
