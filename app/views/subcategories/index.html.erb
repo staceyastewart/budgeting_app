@@ -5,14 +5,14 @@
         <h2>Subcategories</h2>
         <p>Congrats on setting up your categories! You are now ready to set up your subcategories for each category below. Each category must have at least one subcategory.</p>
         <p>Some examples of subcategories include: restaurants, groceries, and takeout for a food category; cable bill, electricity bill, rent/mortgage, furniture, and upkeep for a home category; metrocard, uber, taxi, car payment, and parking for a transportation category.</p>
-        <p class="bottom-p">Once you have created at least one subcategory for each category, you can move on to <a href="/monthly_budget?year=2017">budget setup</a>.</p>
+        <p class="bottom-p">Once you have created at least one subcategory for each category, you can move on to the <a href="/monthly_budget?year=2017">budget setup</a> page.</p>
         <%= form_for :subcategory, url: "/subcategories" do |f| %>
           <%= label_tag(:name, "Create a subcategory:") %><br>
           <%= f.text_field :name, placeholder: "Your subcategory", class: "category_input" %> <br>
           <%= label_tag(:category, "Category:") %><br>
           <%= f.collection_select :category_id,  Category.where(:user_id => current_user.id), :id, :title, class: "drop-down-category" %> <br>
           <%= f.hidden_field :user_id, :value => @user %>
-          <%= f.submit "Add Subcategory!", class: "btn btn-info btn-xs" %>
+          <%= f.submit "Add Subcategory!", class: "btn btn-info btn-xs subcat-button" %>
         <% end %>
       </div>
     </div>
