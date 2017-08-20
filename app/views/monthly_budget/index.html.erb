@@ -14,7 +14,7 @@
             <%= label_tag(:amount, "Amount") %>
             <%= text_field_tag :amount %> <br>
             <%= label_tag(:subcategory, "Subcategory") %>
-            <%= f.collection_select :subcategory,  Subcategory.where(:user_id => current_user.id), :id, :name %> <br>
+            <%= f.collection_select :subcategory,  @subcategory_array, :id, :name %> <br>
             <%= hidden_field_tag :month, "ALL" %>
             <%= hidden_field_tag :year, params[:year] %> <br>
             <%= hidden_field_tag :user_id, @user %>
@@ -33,7 +33,7 @@
           <tr>
             <th>CATEGORY</th>
             <th>Subcategory</th>
-            <th><a href="/monthly_budget/January?year=<%= @year %>&month=January" data-no-turbolink="true">Jan</a></th>
+            <th><a href="/monthly_budget/January?year=<%= @year %>&month=January">Jan</a></th>
             <th><a href="/monthly_budget/February?year=<%= @year %>&month=February">Feb</a></th>
             <th><a href="/monthly_budget/March?year=<%= @year %>&month=March">Mar</a></th>
             <th><a href="/monthly_budget/April?year=<%= @year %>&month=April">Apr</a></th>
@@ -47,11 +47,11 @@
             <th><a href="/monthly_budget/December?year=<%= @year %>&month=December">Dec</a></th>
             <th>Delete</th>
           </tr>
-          <% @cats.each do |cat| %>
-              <% @subcats.each do |subcategory| %>
-                <% if subcategory[1] == cat.id %>
+          <% @categories.each do |category| %>
+              <% @subcategories.each do |subcategory| %>
+                <% if subcategory[1] == category.id %>
                   <tr>
-                    <td><%= cat. title %></td>
+                    <td><%= category. title %></td>
                     <td><%= subcategory[0] %></td>
                     <% @counter = 0 %>
                     <% @budgets.each do |budget| %>
@@ -72,8 +72,8 @@
                 <% end %>
               <% end %>
                 <tr>
-                  <td colspan="2" class="warning"><strong><%= cat.title.upcase %> TOTAL</strong></td>
-                  <%= category_totals_by_month(cat, @year, @user) %>
+                  <td colspan="2" class="warning"><strong><%= category.title.upcase %> TOTAL</strong></td>
+                  <%= category_totals_by_month(category, @year, @user) %>
                 </tr>
           <% end %>
             <tr>
@@ -96,6 +96,7 @@
   </div>
 <% end %>
 <% else %>
+<!-- if categories are not set up -->
   <div class="container">
     <div class="row justify-content-md-center">
       <div class="col-md-6 col-md-offset-3 text-center">
