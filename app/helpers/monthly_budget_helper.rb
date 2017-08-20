@@ -69,7 +69,7 @@ module MonthlyBudgetHelper
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     month_link_string = ""
     months.each do |month|
-      month_link_string = month_link_string + "<th><a href='/monthly_budget/#{month}?year=#{year}&month=#{month}'>#{month[0..2]}</a></th>"
+      month_link_string = month_link_string + "<th><a href='/monthly_budget/#{month}?year=#{year}&month=#{month}' class='text-center'>#{month[0..2]} </a></th>"
     end
     puts month_link_string
     return month_link_string.html_safe

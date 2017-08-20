@@ -16,7 +16,7 @@
             <%= label_tag(:subcategory, "Subcategory") %>
             <%= f.collection_select :subcategory,  @subcategory_array, :id, :name %> <br>
             <%= hidden_field_tag :month, "ALL" %>
-            <%= hidden_field_tag :year, params[:year] %> <br>
+            <%= hidden_field_tag :year, @year %> <br>
             <%= hidden_field_tag :user_id, @user %>
             <%= f.submit "Add a new Budget!", class: "btn btn-info btn-xs" %>
           <% end %>
@@ -31,7 +31,7 @@
       <div class="col-md-10 col-md-offset-1 ">
         <table border="1" class="table table-responsive">
           <tr>
-            <th>CATEGORY</th>
+            <th>Category</th>
             <th>Subcategory</th>
             <%= month_links(@year) %>
             <th>Delete</th>
@@ -40,7 +40,7 @@
               <% @subcategories.each do |subcategory| %>
                 <% if subcategory[1] == category.id %>
                   <tr>
-                    <td><%= category. title %></td>
+                    <td><%= category.title %></td>
                     <td><%= subcategory[0] %></td>
                     <% @counter = 0 %>
                     <% @budgets.each do |budget| %>
