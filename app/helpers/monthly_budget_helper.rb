@@ -46,7 +46,6 @@ module MonthlyBudgetHelper
     oct = category.month_budget_by_category("October", year, user)
     nov = category.month_budget_by_category("November", year, user)
     dec = category.month_budget_by_category("December", year, user)
-    montharray = [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
     return month_loop("warning", jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec)
   end
 
@@ -66,6 +65,15 @@ module MonthlyBudgetHelper
     return month_loop("success", jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec)
   end
 
+  def month_links(year)
+    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    month_link_string = ""
+    months.each do |month|
+      month_link_string = month_link_string + "<th><a href='/monthly_budget/#{month}?year=#{year}&month=#{month}'>#{month[0..2]}</a></th>"
+    end
+    puts month_link_string
+    return month_link_string.html_safe
+  end
 
   def category_totals_by_month_individual(category, year, user)
     month = category.month_budget_by_category(params[:id], year, user)

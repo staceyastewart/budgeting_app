@@ -33,18 +33,7 @@
           <tr>
             <th>CATEGORY</th>
             <th>Subcategory</th>
-            <th><a href="/monthly_budget/January?year=<%= @year %>&month=January">Jan</a></th>
-            <th><a href="/monthly_budget/February?year=<%= @year %>&month=February">Feb</a></th>
-            <th><a href="/monthly_budget/March?year=<%= @year %>&month=March">Mar</a></th>
-            <th><a href="/monthly_budget/April?year=<%= @year %>&month=April">Apr</a></th>
-            <th><a href="/monthly_budget/May?year=<%= @year %>&month=May">May</a></th>
-            <th><a href="/monthly_budget/June?year=<%= @year %>&month=June">Jun</a></th>
-            <th><a href="/monthly_budget/July?year=<%= @year %>&month=July">Jul</a></th>
-            <th><a href="/monthly_budget/August?year=<%= @year %>&month=August">Aug</a></th>
-            <th><a href="/monthly_budget/September?year=<%= @year %>&month=September">Sep</a></th>
-            <th><a href="/monthly_budget/October?year=<%= @year %>&month=October">Oct</a></th>
-            <th><a href="/monthly_budget/November?year=<%= @year %>&month=November">Nov</a></th>
-            <th><a href="/monthly_budget/December?year=<%= @year %>&month=December">Dec</a></th>
+            <%= month_links(@year) %>
             <th>Delete</th>
           </tr>
           <% @categories.each do |category| %>
