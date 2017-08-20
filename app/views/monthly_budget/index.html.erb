@@ -1,111 +1,107 @@
 <% if user_has_categories(@user_hash) %>
 <!-- if every user has at least 1 category -->
 <% if each_category_has_child(@user_hash)  %>
-<!-- if every category has a subcategory show -->
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-md-6 col-md-offset-3 text-center">
-      <h2>Annual Budget Setup</h2>
-        <p>Congrats on setting up your categories & subcategories!</p>
-        <p>The next step is to set up your annual budget below. Select an amount to budget per month for each subcategory. If you need to adjust a specific month's budget, you can click into that month and edit each subcategory's budget there. </p>
-        <p>If you would like to delete a subcategory's budget, please use the link on the far right in the table. This will delete the budget you created for every month.</p>
-        <p>When you have finished setting up your annual budget, start tracking your <a href=<%= "/income?year=#{@year}"%> >income</a> and <a href="/expenses?year=<%= @year %>">expenses</a>.</p>
-
-        <%= form_for :monthly_budget, url: "/monthly_budget" do |f| %>
-          <%= label_tag(:amount, "Amount") %>
-          <%= text_field_tag :amount %> <br>
-          <%= label_tag(:subcategory, "Subcategory") %>
-          <%= f.collection_select :subcategory,  Subcategory.where(:user_id => current_user.id), :id, :name %> <br>
-          <%= hidden_field_tag :month, "ALL" %>
-          <%= hidden_field_tag :year, params[:year] %> <br>
-          <%= hidden_field_tag :user_id, @user %>
-          <%= f.submit "Add a new Budget!", class: "btn btn-info btn-xs" %>
-        <% end %>
+<!-- if every category has at least 1 subcategory -->
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <h2>Annual Budget Setup</h2>
+          <p>Congrats on setting up your categories & subcategories!</p>
+          <p>The next step is to set up your annual budget below. Select an amount to budget per month for each subcategory. If you need to adjust a specific month's budget, you can click into that month and edit each subcategory's budget there. </p>
+          <p>If you would like to delete a subcategory's budget, please use the link on the far right in the table. This will delete the budget you created for every month.</p>
+          <p>When you have finished setting up your annual budget, start tracking your <a href=<%= "/income?year=#{@year}"%> >income</a> and <a href="/expenses?year=<%= @year %>">expenses</a>.</p>
+          <%= form_for :monthly_budget, url: "/monthly_budget" do |f| %>
+            <%= label_tag(:amount, "Amount") %>
+            <%= text_field_tag :amount %> <br>
+            <%= label_tag(:subcategory, "Subcategory") %>
+            <%= f.collection_select :subcategory,  Subcategory.where(:user_id => current_user.id), :id, :name %> <br>
+            <%= hidden_field_tag :month, "ALL" %>
+            <%= hidden_field_tag :year, params[:year] %> <br>
+            <%= hidden_field_tag :user_id, @user %>
+            <%= f.submit "Add a new Budget!", class: "btn btn-info btn-xs" %>
+          <% end %>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="container">
-  <h3 class="text-center subcategory-title">Your <%= @year %> budget:</h3>
-</div>
-
-<div class="container-fluid">
-  <div class="row justify-content-md-center">
-    <div class="col-md-10 col-md-offset-1 ">
-      <table border="1" class="table table-responsive">
-        <tr>
-          <th>CATEGORY</th>
-          <th>Subcategory</th>
-          <th><a href="/monthly_budget/January?year=<%= @year %>&month=January" data-no-turbolink="true">Jan</a></th>
-          <th><a href="/monthly_budget/February?year=<%= @year %>&month=February">Feb</a></th>
-          <th><a href="/monthly_budget/March?year=<%= @year %>&month=March">Mar</a></th>
-          <th><a href="/monthly_budget/April?year=<%= @year %>&month=April">Apr</a></th>
-          <th><a href="/monthly_budget/May?year=<%= @year %>&month=May">May</a></th>
-          <th><a href="/monthly_budget/June?year=<%= @year %>&month=June">Jun</a></th>
-          <th><a href="/monthly_budget/July?year=<%= @year %>&month=July">Jul</a></th>
-          <th><a href="/monthly_budget/August?year=<%= @year %>&month=August">Aug</a></th>
-          <th><a href="/monthly_budget/September?year=<%= @year %>&month=September">Sep</a></th>
-          <th><a href="/monthly_budget/October?year=<%= @year %>&month=October">Oct</a></th>
-          <th><a href="/monthly_budget/November?year=<%= @year %>&month=November">Nov</a></th>
-          <th><a href="/monthly_budget/December?year=<%= @year %>&month=December">Dec</a></th>
-          <th>Delete</th>
-        </tr>
-        <% @cats.each do |cat| %>
-            <% @subcats.each do |subcategory| %>
-              <% if subcategory[1] == cat.id %>
-                <tr>
-                  <td><%= cat. title %></td>
-                  <td><%= subcategory[0] %></td>
-                  <% @counter = 0 %>
-                  <% @budgets.each do |budget| %>
-                    <% if budget.subcategory_id == subcategory[2] %>
-                      <td class="text-center"><%= budget.amount %></td>
-                      <% @counter += 1 %>
-                      <% if budget.month_num == 12 %>
-                        <td><%= link_to 'Destroy', budget, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+  <div class="container">
+    <h3 class="text-center subcategory-title">Your <%= @year %> budget:</h3>
+  </div>
+  <div class="container-fluid">
+    <div class="row justify-content-md-center">
+      <div class="col-md-10 col-md-offset-1 ">
+        <table border="1" class="table table-responsive">
+          <tr>
+            <th>CATEGORY</th>
+            <th>Subcategory</th>
+            <th><a href="/monthly_budget/January?year=<%= @year %>&month=January" data-no-turbolink="true">Jan</a></th>
+            <th><a href="/monthly_budget/February?year=<%= @year %>&month=February">Feb</a></th>
+            <th><a href="/monthly_budget/March?year=<%= @year %>&month=March">Mar</a></th>
+            <th><a href="/monthly_budget/April?year=<%= @year %>&month=April">Apr</a></th>
+            <th><a href="/monthly_budget/May?year=<%= @year %>&month=May">May</a></th>
+            <th><a href="/monthly_budget/June?year=<%= @year %>&month=June">Jun</a></th>
+            <th><a href="/monthly_budget/July?year=<%= @year %>&month=July">Jul</a></th>
+            <th><a href="/monthly_budget/August?year=<%= @year %>&month=August">Aug</a></th>
+            <th><a href="/monthly_budget/September?year=<%= @year %>&month=September">Sep</a></th>
+            <th><a href="/monthly_budget/October?year=<%= @year %>&month=October">Oct</a></th>
+            <th><a href="/monthly_budget/November?year=<%= @year %>&month=November">Nov</a></th>
+            <th><a href="/monthly_budget/December?year=<%= @year %>&month=December">Dec</a></th>
+            <th>Delete</th>
+          </tr>
+          <% @cats.each do |cat| %>
+              <% @subcats.each do |subcategory| %>
+                <% if subcategory[1] == cat.id %>
+                  <tr>
+                    <td><%= cat. title %></td>
+                    <td><%= subcategory[0] %></td>
+                    <% @counter = 0 %>
+                    <% @budgets.each do |budget| %>
+                      <% if budget.subcategory_id == subcategory[2] %>
+                        <td class="text-center"><%= budget.amount %></td>
+                        <% @counter += 1 %>
+                        <% if budget.month_num == 12 %>
+                          <td><%= link_to 'Destroy', budget, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+                        <% end %>
                       <% end %>
                     <% end %>
-                  <% end %>
-                  <% if @counter < 12 %>
-                    <% 12.times do |x| %>
-                      <td class="text-center"> <%= @counter %></td>
+                    <% if @counter < 12 %>
+                      <% 12.times do |x| %>
+                        <td class="text-center"> <%= @counter %></td>
+                      <% end %>
                     <% end %>
-                  <% end %>
-                </tr>
+                  </tr>
+                <% end %>
               <% end %>
-            <% end %>
-              <tr>
-                <td colspan="2" class="warning"><strong><%= cat.title.upcase %> TOTAL</strong></td>
-                <%= category_totals_by_month(cat, @year, @user) %>
-              </tr>
-        <% end %>
-          <tr>
-            <td colspan="2" class="success"><strong>BUDGET TOTAL</strong></td>
-            <%= overall_total_by_month(@user_hash, @year) %>
-          </tr>
-      </table>
+                <tr>
+                  <td colspan="2" class="warning"><strong><%= cat.title.upcase %> TOTAL</strong></td>
+                  <%= category_totals_by_month(cat, @year, @user) %>
+                </tr>
+          <% end %>
+            <tr>
+              <td colspan="2" class="success"><strong>BUDGET TOTAL</strong></td>
+              <%= overall_total_by_month(@user_hash, @year) %>
+            </tr>
+        </table>
+      </div>
     </div>
   </div>
-</div>
-
 <% else %>
 <!-- if a category is missing a subcategory show below -->
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-md-6 col-md-offset-3 text-center">
-      <h2>Oops!</h2>
-      <p>It looks like you forgot to create a subcategory for one of your categories! Please return to the <a href="/subcategories">subcategories</a> page. Your budget setup page will be available once this is fixed!</p>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <h2>Oops!</h2>
+        <p>It looks like you forgot to create a subcategory for one of your categories! Please return to the <a href="/subcategories">subcategories</a> page. Your budget setup page will be available once this is fixed!</p>
+      </div>
     </div>
   </div>
-</div>
 <% end %>
 <% else %>
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-md-6 col-md-offset-3 text-center">
-      <h2>Oops!</h2>
-      <p>It looks like you forgot to create categories! Please return to the <a href="/categories">categories</a> page. Your budget setup page will be available once you create categories and subcategories.</p>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <h2>Oops!</h2>
+        <p>It looks like you forgot to create categories! Please return to the <a href="/categories">categories</a> page. Your budget setup page will be available once you create categories and subcategories.</p>
+      </div>
     </div>
   </div>
-</div>
 <% end %>
