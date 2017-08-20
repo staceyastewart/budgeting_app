@@ -5,8 +5,9 @@ class MonthlyBudgetController < ApplicationController
   def index
     @user = current_user.id
     @user_hash = set_user
-    @cats = find_all_categories
-    @subcats = find_all_subcategories
+    @categories = find_all_categories
+    @subcategories = find_all_subcategories
+    @subcategory_array = subcategory_array
     @budgets = find_all_budgets
     @year = set_year
   end
@@ -16,8 +17,8 @@ class MonthlyBudgetController < ApplicationController
     @user_hash = set_user
     @month = set_month
     @year = set_year
-    @cats = find_all_categories
-    @subcats = find_all_subcategories
+    @categories = find_all_categories
+    @subcategories = find_all_subcategories
     @budgets = find_month_budget
   end
 
@@ -66,6 +67,10 @@ class MonthlyBudgetController < ApplicationController
 
   def find_all_subcategories
     Subcategory.where(:user_id => current_user.id).pluck(:name, :category_id, :id)
+  end
+
+  def subcategory_array
+    Subcategory.where(:user_id => current_user.id)
   end
 
   def budget_to_update
