@@ -16,6 +16,23 @@ module MonthlyBudgetHelper
     return true
   end
 
+  def month_loop(styling, jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec)
+    "
+      <td class='text-center #{styling}'> #{jan} </td>
+      <td class='text-center #{styling}'> #{feb} </td>
+      <td class='text-center #{styling}'> #{mar} </td>
+      <td class='text-center #{styling}'> #{apr} </td>
+      <td class='text-center #{styling}'> #{may} </td>
+      <td class='text-center #{styling}'> #{jun} </td>
+      <td class='text-center #{styling}'> #{jul} </td>
+      <td class='text-center #{styling}'> #{aug} </td>
+      <td class='text-center #{styling}'> #{sep} </td>
+      <td class='text-center #{styling}'> #{oct} </td>
+      <td class='text-center #{styling}'> #{nov} </td>
+      <td class='text-center #{styling}'> #{dec} </td>
+    ".html_safe
+  end
+
   def category_totals_by_month(category, year, user)
     jan = category.month_budget_by_category("January", year, user)
     feb = category.month_budget_by_category("February", year, user)
@@ -29,20 +46,8 @@ module MonthlyBudgetHelper
     oct = category.month_budget_by_category("October", year, user)
     nov = category.month_budget_by_category("November", year, user)
     dec = category.month_budget_by_category("December", year, user)
-    return "
-      <td class='text-center warning'> #{jan} </td>
-      <td class='text-center warning'> #{feb} </td>
-      <td class='text-center warning'> #{mar} </td>
-      <td class='text-center warning'> #{apr} </td>
-      <td class='text-center warning'> #{may} </td>
-      <td class='text-center warning'> #{jun} </td>
-      <td class='text-center warning'> #{jul} </td>
-      <td class='text-center warning'> #{aug} </td>
-      <td class='text-center warning'> #{sep} </td>
-      <td class='text-center warning'> #{oct} </td>
-      <td class='text-center warning'> #{nov} </td>
-      <td class='text-center warning'> #{dec} </td>
-    ".html_safe
+    montharray = [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
+    return month_loop("warning", jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec)
   end
 
   def overall_total_by_month(user, year)
@@ -58,20 +63,7 @@ module MonthlyBudgetHelper
     oct = user.total_month_budget("October", year)
     nov = user.total_month_budget("November", year)
     dec = user.total_month_budget("December", year)
-    return "
-      <td class='text-center success'> #{jan} </td>
-      <td class='text-center success'> #{feb} </td>
-      <td class='text-center success'> #{mar} </td>
-      <td class='text-center success'> #{apr} </td>
-      <td class='text-center success'> #{may} </td>
-      <td class='text-center success'> #{jun} </td>
-      <td class='text-center success'> #{jul} </td>
-      <td class='text-center success'> #{aug} </td>
-      <td class='text-center success'> #{sep} </td>
-      <td class='text-center success'> #{oct} </td>
-      <td class='text-center success'> #{nov} </td>
-      <td class='text-center success'> #{dec} </td>
-    ".html_safe
+    return month_loop("success", jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec)
   end
 
 
