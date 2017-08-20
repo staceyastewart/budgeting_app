@@ -30,11 +30,11 @@
             <th>Update?</th>
             <th>Delete?</th>
           </tr>
-          <% @categories.each do |x| %>
+          <% @categories.each do |category| %>
             <% @subcategories.each do |subcategory| %>
-              <% if subcategory[1] == x.id %>
+              <% if subcategory[1] == category.id %>
                 <tr>
-                  <td><strong><%= x[:title] %></strong></td>
+                  <td><strong><%= category[:title] %></strong></td>
             <%= form_for :subcategory, url: "/subcategories/#{subcategory[2]}", :method => :put do |f| %>
               <td><%= f.text_field :name, :value => subcategory[0] %></td>
               <td><%= f.submit "Update!", class: "btn btn-success btn-xs" %></td>
