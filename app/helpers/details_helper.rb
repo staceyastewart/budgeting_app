@@ -53,10 +53,14 @@ module DetailsHelper
   end
 
   def difference(num1, num2)
-    if num1 - num2 < 0
-      return "<td style='color:red'> #{number_to_currency(num1 - num2)} </td>".html_safe
+    if num2 < 0
+      return "<td> #{number_to_currency(num1 + num2)} </td>".html_safe
     else
-      return "<td> #{number_to_currency(num1 - num2)} </td>".html_safe
+      if num1 - num2 < 0
+        return "<td style='color:red'> #{number_to_currency(num1 - num2)} </td>".html_safe
+      else
+        return "<td> #{number_to_currency(num1 - num2)} </td>".html_safe
+      end
     end
   end
 

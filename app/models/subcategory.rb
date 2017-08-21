@@ -16,15 +16,14 @@ class Subcategory < ApplicationRecord
   end
 
   def total_expense(month, year, user, chart)
-      expenses
-        .where(
-          month: month,
-          year: year,
-          user_id: user
-          )
-        .pluck(:amount)
-        .inject(&:+)
+    expenses
+      .where(
+        month: month,
+        year: year,
+        user_id: user
+        )
+      .pluck(:amount)
+      .inject(&:+)
   end
-
 
 end
