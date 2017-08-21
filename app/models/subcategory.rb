@@ -16,19 +16,6 @@ class Subcategory < ApplicationRecord
   end
 
   def total_expense(month, year, user, chart)
-    # if chart == true
-    #   expenses
-    #     .where(
-    #       month: month,
-    #       year: year,
-    #       user_id: user
-    #       )
-    #     .pluck(:amount)
-    #     .inject(&:+)
-    #   if prices_array[0] < 0
-    #     return [1]
-    #   end
-    # else
       expenses
         .where(
           month: month,
@@ -37,7 +24,6 @@ class Subcategory < ApplicationRecord
           )
         .pluck(:amount)
         .inject(&:+)
-    # end
   end
 
 

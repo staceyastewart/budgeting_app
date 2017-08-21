@@ -18,7 +18,11 @@ class Category < ApplicationRecord
         total_expense_arr.push(subcategory.total_expense(month, year, user, chart))
     end
     total_expense_arr.map! { |x| x ? x : 0}
-    return total_expense_arr.reduce(:+)
+    if total_expense_arr.reduce(:+) < 0
+      return 1
+    else
+      return total_expense_arr.reduce(:+)
+    end
   end
 
 
