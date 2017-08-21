@@ -8,11 +8,29 @@ module DetailsHelper
     return true
   end
 
+  def subtract(num1, num2)
+    if num2 < 0
+      return number_to_currency(num1 + num2)
+    else
+      return number_to_currency(num1 - num2)
+    end
+  end
+
   def total_html(total_budget, total_expense)
     if total_budget && total_expense
-      difference = total_budget - total_expense
+      # if total expense is negative...
+      if total_expense < 0
+        difference = total_budget + total_expense
+      else
+        difference = total_budget - total_expense
+      end
+      # difference = subtract(total_budget - total_expense)
       if difference < 0
-        return "<td class='text-center'> #{number_to_currency(total_budget)} </td> <td class='text-center'> #{number_to_currency(total_expense)} </td> <td class='text-center' style='color:red'> #{number_to_currency(total_budget - total_expense)}</td>".html_safe
+        if total_expense < 0
+          return "<td class='text-center'> #{number_to_currency(total_budget)} </td> <td class='text-center'> #{number_to_currency(total_expense)} </td> <td class='text-center' style='color:red'> #{number_to_currency(total_budget + total_expense)}</td>".html_safe
+        else
+          return "<td class='text-center'> #{number_to_currency(total_budget)} </td> <td class='text-center'> #{number_to_currency(total_expense)} </td> <td class='text-center' style='color:red'> #{number_to_currency(total_budget - total_expense)}</td>".html_safe
+        end
       else
         return "<td class='text-center'> #{number_to_currency(total_budget)} </td> <td class='text-center'> #{number_to_currency(total_expense)} </td> <td class='text-center'> #{number_to_currency(total_budget - total_expense)}</td>".html_safe
       end
