@@ -26,7 +26,6 @@
     </div>
   </div>
   <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
-
   <div class="container">
     <div class="row">
       <div class="col-md-6">
@@ -35,11 +34,10 @@
       </div>
       <div class="col-md-6">
         <h3 class="text-center">Actual Spending</h3>
-        <%= pie_chart @user.total_month_expense_by_category(@month, @year) %>
+        <%= pie_chart @user.total_month_expense_by_category(@month, @year, true) %>
       </div>
     </div>
   </div>
-
   <div class="container">
     <div class="row">
       <div class="col-md-10 col-md-offset-1 ">
@@ -55,11 +53,11 @@
             </tr>
             <tr>
               <td>Month Actual</td>
-              <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
+              <td><%= number_to_currency(@user.total_month_expense(@month, @year, false)) %></td>
             </tr>
             <tr>
               <td>Difference</td>
-              <%= difference(@user.total_month_budget(@month, @year), @user.total_month_expense(@month, @year)) %>
+              <%= difference(@user.total_month_budget(@month, @year), @user.total_month_expense(@month, @year, false)) %>
             </tr>
           </table>
         </div>
@@ -75,11 +73,11 @@
             </tr>
             <tr>
               <td>Month Actual Spend</td>
-              <td><%= number_to_currency(@user.total_month_expense(@month, @year)) %></td>
+              <td><%= number_to_currency(@user.total_month_expense(@month, @year, false)) %></td>
             </tr>
             <tr>
               <td>Difference</td>
-              <%= difference(total_income(@month, @year, @user), @user.total_month_expense(@month, @year)) %>
+              <%= difference(total_income(@month, @year, @user), @user.total_month_expense(@month, @year, false)) %>
             </tr>
           </table>
         </div>

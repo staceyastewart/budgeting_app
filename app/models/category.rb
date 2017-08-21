@@ -12,10 +12,10 @@ class Category < ApplicationRecord
   end
 
   #below method will return the total expenses for one category for one month in one year
-  def month_expense_by_category(month, year, user)
+  def month_expense_by_category(month, year, user, chart)
     total_expense_arr = []
-    subcategories.each do |x|
-        total_expense_arr.push(x.total_expense(month, year, user))
+    subcategories.each do |subcategory|
+        total_expense_arr.push(subcategory.total_expense(month, year, user, chart))
     end
     total_expense_arr.map! { |x| x ? x : 0}
     return total_expense_arr.reduce(:+)

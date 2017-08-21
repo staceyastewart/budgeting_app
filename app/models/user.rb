@@ -18,11 +18,11 @@ class User < ApplicationRecord
     return month_budget_arr.reduce(:+)
   end
 
-  def total_month_expense(month, year)
+  def total_month_expense(month, year, chart)
     user = self.id
     month_exp_arr = []
     categories.each do |category|
-      month_exp_arr.push(category.month_expense_by_category(month, year, user))
+      month_exp_arr.push(category.month_expense_by_category(month, year, user, chart))
     end
     return month_exp_arr.reduce(:+)
   end
@@ -36,11 +36,11 @@ class User < ApplicationRecord
     return month_budget_arr
   end
 
-  def total_month_expense_by_category(month, year)
+  def total_month_expense_by_category(month, year, chart)
     user = self.id
     month_budget_arr = []
     categories.each do |category|
-      month_budget_arr.push([category.title, category.month_expense_by_category(month, year, user)])
+      month_budget_arr.push([category.title, category.month_expense_by_category(month, year, user, chart)])
     end
     return month_budget_arr
   end

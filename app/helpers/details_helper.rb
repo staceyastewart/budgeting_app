@@ -27,13 +27,13 @@ module DetailsHelper
 
   def budget_display(subcategory)
     total_budget = subcategory.total_budget(@month, @year, current_user.id)
-    total_expense = subcategory.total_expense(@month, @year, current_user.id)
+    total_expense = subcategory.total_expense(@month, @year, current_user.id, false)
     total_html(total_budget, total_expense)
   end
 
   def total_display(category)
     total_budget = category.month_budget_by_category(@month, @year, current_user.id)
-    total_expense = category.month_expense_by_category(@month, @year, current_user.id)
+    total_expense = category.month_expense_by_category(@month, @year, current_user.id, false)
     # total_html(total_budget, total_expense)
 
     if total_budget && total_expense
