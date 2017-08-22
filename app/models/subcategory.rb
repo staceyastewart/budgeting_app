@@ -15,7 +15,7 @@ class Subcategory < ApplicationRecord
       .inject(&:+)
   end
 
-  def total_expense(month, year, user)
+  def total_expense(month, year, user, chart)
     expenses
       .where(
         month: month,
@@ -25,6 +25,5 @@ class Subcategory < ApplicationRecord
       .pluck(:amount)
       .inject(&:+)
   end
-
 
 end
